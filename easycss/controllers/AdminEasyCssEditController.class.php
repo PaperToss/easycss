@@ -157,6 +157,7 @@ class AdminEasyCssEditController extends ModuleController
                 self::$vars[$id] = new $classname($id, $value);
         }
         $this->write_to_file();
+        $this->clear_css_cache();
         $this->view->put('MSG', MessageHelper::display($this->lang['file_edit_success'], MessageHelper::SUCCESS, 5));
     }
 
@@ -194,6 +195,15 @@ class AdminEasyCssEditController extends ModuleController
         }
         $textarea = new FormFieldHidden('elements', $textarea_content);
         $this->fieldset->add_field($textarea);
+    }
+    
+    private function clear_css_cache()
+    {
+        $css_cache_config = CSSCacheConfig::load();
+        if ($css_cache_config->is_enabled())
+        {
+            AppContext::get_cache_service()->clear_css_cache();
+        }
     }
 
 }
