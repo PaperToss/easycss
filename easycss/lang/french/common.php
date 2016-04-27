@@ -33,3 +33,5 @@
 $lang['module_title'] = 'EasyCss';
 
 $lang['theme_choice'] = 'Choix du thème';
+
+$lang['file_edit_success'] = 'Le fichier a bien été modifié';

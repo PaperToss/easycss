@@ -39,10 +39,10 @@ class AdminEasyCssEditController extends ModuleController
 
     /** @var array          Array de langue */
     private $lang;
-    
+
     /** @var \HTMLForm      Formulaire */
     private $form;
-    
+
     /** @var \FormFieldsetHTML      Contenant des champs */
     private $fieldset;
 
@@ -54,72 +54,35 @@ class AdminEasyCssEditController extends ModuleController
 
     /** @var string         Nom du fichier css */
     private $css_id;
-    
+
     /** @var int            Compteur de remplacement */
     public static $counter;
-    
+
     /** @var array          Elements remplacés */
     public static $vars;
-    
+
     /** @var string         Contenu du fichier parsé */
     private $parsed_content;
-    
+
     /** @var \EasyCssAbstractElement array */
     private $elements = ['EasyCssTitleElement', 'EasyCssColorElement'];
 
     public function execute(\HTTPRequestCustom $request)
     {
-        
-        
-        
-        
         $this->get_file($request);
         $this->init();
-        
+
         $this->build_form();
         $this->do_preg_replace();
-        
+
         $this->fieldset = new FormFieldsetHTML($this->theme_id, $this->theme_id . ' - ' . $this->css_id);
         $this->form->add_fieldset($this->fieldset);
-        
+
         if ($request->is_post_method())
-        {
-            $post_elements = $request->get_poststring(__CLASS__ . '_elements', false);
-            $elements = explode('-', $post_elements);
-            foreach($elements as $element)
-            {
-                if ($element == '') break 1;
-                $exploded_element = explode('_', $element);
-                $classname = $exploded_element[0];
-                $id = $exploded_element[1];
-                $value = $request->get_poststring(__CLASS__ . '_' . $element, false);
-                if ($classname::$can_modify)
-                    self::$vars[$id] = new $classname($id,$value);
-            }
-            $this->write_to_file();
-        }
-        
-        
-        
-        
-        
-        $textarea_content = '';
-        
-        $lines = explode("\n", $this->parsed_content);
-        
-        foreach ($lines as $line)
-        {
-            if (preg_match('`###(\d+)\/###`isU', $line, $matches))
-            {
-                $obj = self::$vars[$matches[1]];
-                $this->fieldset = $obj->createFormElement($this->fieldset);
-                
-                $textarea_content .= get_class($obj) . '_' . $matches[1] .'-';
-            }
-        }
-        $textarea = new FormFieldHidden('elements', $textarea_content);
-        $this->fieldset->add_field($textarea);
-        
+            $this->post_process($request);
+
+        $this->build_elements_to_display();
+
         $this->finalize_form();
 
         return $this->build_response($this->view);
@@ -140,7 +103,7 @@ class AdminEasyCssEditController extends ModuleController
         $this->css_id = $request->get_getstring('file', false);
         $this->css_id = trim($this->css_id, '/');
 
-        $file_path = PATH_TO_ROOT . '/templates/' . $this->theme_id . '/theme/' . $this->css_id .'.css';
+        $file_path = PATH_TO_ROOT . '/templates/' . $this->theme_id . '/theme/' . $this->css_id . '.css';
         $this->file = new File($file_path);
 
         if (!$this->file->exists())
@@ -160,36 +123,77 @@ class AdminEasyCssEditController extends ModuleController
         $this->form->add_button(new FormButtonReset());
         $this->view->put('FORM', $this->form->display());
     }
-    
+
     private function build_response(View $view)
     {
         $response = new AdminDisplayResponse($view);
         $response->get_graphical_environment()->set_page_title($this->lang['module_title']);
         return $response;
     }
-    
+
     private function do_preg_replace()
     {
         $this->parsed_content = $this->file->read();
-        
+
         foreach ($this->elements as $element)
         {
-            $this->parsed_content = preg_replace_callback($element::$regex, array($element,'replace'), $this->parsed_content);
+            $this->parsed_content = preg_replace_callback($element::$regex, array($element, 'replace'), $this->parsed_content);
         }
     }
-    
+
+    private function post_process(\HTTPRequestCustom $request)
+    {
+        $post_elements = $request->get_poststring(__CLASS__ . '_elements', false);
+        $elements = explode('-', $post_elements);
+        foreach ($elements as $element)
+        {
+            if ($element == '')
+                break 1;
+            $exploded_element = explode('_', $element);
+            $classname = $exploded_element[0];
+            $id = $exploded_element[1];
+            $value = $request->get_poststring(__CLASS__ . '_' . $element, false);
+            if ($classname::$can_modify)
+                self::$vars[$id] = new $classname($id, $value);
+        }
+        $this->write_to_file();
+        $this->view->put('MSG', MessageHelper::display($this->lang['file_edit_success'], MessageHelper::SUCCESS, 5));
+    }
+
     private function write_to_file()
     {
         $lines = explode("\n", $this->parsed_content);
         $css = '';
         foreach ($lines as &$line)
         {
-            $line = preg_replace_callback('`###(\d+)\/###`isU', function($matches){
-            $obj = self::$vars[$matches[1]];
-            return $obj->getTextToFile();} , $line);
+            $line = preg_replace_callback('`###(\d+)\/###`isU', function($matches)
+            {
+                $obj = self::$vars[$matches[1]];
+                return $obj->getTextToFile();
+            }, $line);
             $css .= $line . "\n";
         }
         $this->file->write($css);
+    }
+    
+    private function build_elements_to_display()
+    {
+        $textarea_content = '';
+
+        $lines = explode("\n", $this->parsed_content);
+
+        foreach ($lines as $line)
+        {
+            if (preg_match('`###(\d+)\/###`isU', $line, $matches))
+            {
+                $obj = self::$vars[$matches[1]];
+                $this->fieldset = $obj->createFormElement($this->fieldset);
+
+                $textarea_content .= get_class($obj) . '_' . $matches[1] . '-';
+            }
+        }
+        $textarea = new FormFieldHidden('elements', $textarea_content);
+        $this->fieldset->add_field($textarea);
     }
 
 }
