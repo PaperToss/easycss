@@ -48,7 +48,7 @@ class EasyCssColorElement extends EasyCssAbstractElement
     
     public function createFormElement(\FormFieldsetHTML $fieldset)
     {
-        $field = new FormFieldColorPicker(__CLASS__ . '_' . $this->id, 'color:', '#' . $this->value);
+        $field = new FormFieldColorPicker(__CLASS__ . '_' . $this->id, LangLoader::get_message('color_description', 'common', 'easycss') . ' : ', '#' . $this->value);
         $fieldset->add_field($field);
         return $fieldset;
     }

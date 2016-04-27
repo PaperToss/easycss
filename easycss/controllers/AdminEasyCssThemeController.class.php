@@ -27,7 +27,7 @@
   ################################################### */
 
 /**
- * Description of AdminEasyCssController
+ * Recense et affiche les fichiers CSS utilisés par thème installé
  *
  * @author PaperToss
  */
@@ -43,9 +43,6 @@ class AdminEasyCssThemeController extends ModuleController
         $this->init();
         
         $this->get_themes_folders();
-        
-        
-        
         
         return $this->build_response($this->view);
     }

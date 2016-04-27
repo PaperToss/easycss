@@ -27,9 +27,10 @@
   ################################################### */
 
 /**
- * Description of AdminEasyCssEditController
+ * Cette page permet la modification des fichiers CSS contenus dans le dossier 'theme' des thèmes installés
  *
- * @author Toss
+ * @author PaperToss
+ * @
  */
 class AdminEasyCssEditController extends ModuleController
 {
@@ -67,6 +68,12 @@ class AdminEasyCssEditController extends ModuleController
     /** @var \EasyCssAbstractElement array */
     private $elements = ['EasyCssTitleElement', 'EasyCssColorElement'];
 
+    /**
+     * Exécution de la page
+     * 
+     * @param \HTTPRequestCustom $request
+     * @return \AdminDisplayResponse
+     */
     public function execute(\HTTPRequestCustom $request)
     {
         $this->get_file($request);
@@ -88,6 +95,9 @@ class AdminEasyCssEditController extends ModuleController
         return $this->build_response($this->view);
     }
 
+    /**
+     * Création de la langue et la vue
+     */
     private function init()
     {
         $this->lang = LangLoader::get('common', 'easycss');
@@ -95,6 +105,11 @@ class AdminEasyCssEditController extends ModuleController
         $this->view->add_lang($this->lang);
     }
 
+    /**
+     * Récupération du fichier CSS à modifier
+     * 
+     * @param \HTTPRequestCustom $request
+     */
     private function get_file(\HTTPRequestCustom $request)
     {
         $this->theme_id = $request->get_getstring('theme', false);
@@ -110,12 +125,18 @@ class AdminEasyCssEditController extends ModuleController
             DispatchManager::redirect(PHPBoostErrors::unexisting_page());
     }
 
+    /**
+     * Création du formulaire
+     */
     private function build_form()
     {
         $form = new HTMLForm(__CLASS__);
         $this->form = $form;
     }
 
+    /**
+     * Finalisation du formulaire
+     */
     private function finalize_form()
     {
         $button = new FormButtonDefaultSubmit();
@@ -124,6 +145,12 @@ class AdminEasyCssEditController extends ModuleController
         $this->view->put('FORM', $this->form->display());
     }
 
+    /**
+     * Création et retour de la reponse
+     * 
+     * @param View $view
+     * @return \AdminDisplayResponse
+     */
     private function build_response(View $view)
     {
         $response = new AdminDisplayResponse($view);
@@ -131,6 +158,12 @@ class AdminEasyCssEditController extends ModuleController
         return $response;
     }
 
+    /**
+     * Traitement des preg_replace
+     * 
+     * Pour chaque élément contenu dans $this->vars, on teste la présence de son attribut $regex
+     * Et on lance la fonction replace de la classe concernée
+     */
     private function do_preg_replace()
     {
         $this->parsed_content = $this->file->read();
@@ -141,6 +174,11 @@ class AdminEasyCssEditController extends ModuleController
         }
     }
 
+    /**
+     * Processus de récupération des paramètres POST
+     * 
+     * @param \HTTPRequestCustom $request
+     */
     private function post_process(\HTTPRequestCustom $request)
     {
         $post_elements = $request->get_poststring(__CLASS__ . '_elements', false);
@@ -161,6 +199,9 @@ class AdminEasyCssEditController extends ModuleController
         $this->view->put('MSG', MessageHelper::display($this->lang['file_edit_success'], MessageHelper::SUCCESS, 5));
     }
 
+    /**
+     * Ecriture du fichier CSS
+     */
     private function write_to_file()
     {
         $lines = explode("\n", $this->parsed_content);
@@ -177,6 +218,9 @@ class AdminEasyCssEditController extends ModuleController
         $this->file->write($css);
     }
     
+    /**
+     * Création des éléments Form à afficher sur la page
+     */
     private function build_elements_to_display()
     {
         $textarea_content = '';
@@ -197,6 +241,9 @@ class AdminEasyCssEditController extends ModuleController
         $this->fieldset->add_field($textarea);
     }
     
+    /**
+     * Suppression du cache CSS si activé
+     */
     private function clear_css_cache()
     {
         $css_cache_config = CSSCacheConfig::load();
