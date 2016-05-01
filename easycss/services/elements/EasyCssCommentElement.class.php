@@ -1,7 +1,7 @@
 <?php
 
 /* #################################################
- *                           EasyCssHexColorElement.class.php
+ *                           EasyCssCommentElement.class.php
  *                            -------------------
  *   begin                : 2016/04/22
  *   copyright            : (C) 2016 PaperToss
@@ -27,45 +27,42 @@
   ################################################### */
 
 /**
- * Description of EasyCssHexColorElement
+ * Description of EasyCssCommentElement
  *
  * @author Toss
  */
-class EasyCssHexColorElement extends EasyCssAbstractElement
+class EasyCssCommentElement extends EasyCssAbstractElement
 {
 
-    /** Couleur de la forme color : rgba( ; */
-    public static $regex = '`color *: *#([a-f0-9]{3,6}) *;`isU';
+    /** Titre de la forme /** Commentaire */ /**/
+    public static $regex = '`\/\*\*\s*(.+)\s*\*\/`isU';
 
-    /** @var boolean modifiable */
-    public static $can_modify = true;
+    /** @var boolean Non modifiable */
+    public static $can_modify = false;
     
-    /** @var \EasyCssHexColorField */
-    protected $color;
+    /** @var \EasyCssCommentField */
+    protected $title;
 
-    public function __construct($id, $value)
-    {        
-        $this->color = new EasyCssHexColorField($id, $value);
+    public function __construct($id, $title)
+    {
+        $this->title = new EasyCssCommentField($id, $title);
         $this->id = $id;
     }
 
     public function createFormElement()
     {
-        $color_tpl = $this->color->getForm(LangLoader::get_message('color_description', 'common', 'easycss'));
-        $begin = new StringTemplate('<div class="easycss-field">');
-        $end = new StringTemplate('</div>');
-        return array($begin, $color_tpl,$end);
+        $title_tpl = $this->title->getForm(false);
+        return array($title_tpl);
     }
     
     public static function constructFromPost($id, \HTTPRequestCustom $request)
     {
-        $hexcolor = $request->get_poststring('EasyCssHexColorField_' . $id, false);
-        return new self($id, $hexcolor);
+        return false;
     }
 
     public function getTextToFile()
     {
-        return 'color : #' . $this->color->getColor() .';';
+        return '/** ' . $this->title->getComment() . ' */';
     }
 
 }
