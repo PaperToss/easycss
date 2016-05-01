@@ -1,9 +1,9 @@
 <?php
 
 /* #################################################
- *                           EasycssExtensionPointProvider.class.php
+ *                           EasyCssTransparencyField.class.php
  *                            -------------------
- *   begin                : 2016/00/22
+ *   begin                : 2016/04/29
  *   copyright            : (C) 2016 Toss
  *   email                : t0ssp4p3r@gmail.com
  *
@@ -27,28 +27,38 @@
   ################################################### */
 
 /**
- * Provide phpboost services
+ * Description of EasyCssTransparencyField
  *
  * @author PaperToss
  */
-class EasycssExtensionPointProvider extends ExtensionPointProvider
+class EasyCssTransparencyField
 {
 
-    public function __construct()
+    protected $transparency;
+    protected $id;
+
+    public function __construct($id, $transparency)
     {
-        parent::__construct('easycss');
+        $this->transparency = $transparency;
+        $this->id = $id;
     }
 
-    public function url_mappings()
+    public function getTransparency()
     {
-        return new UrlMappings(array(new DispatcherUrlMapping('/easycss/index.php', '([\w/_-]*)$')));
+        return $this->transparency;
     }
-    
-    public function css_files()
+
+    public function getForm($label)
     {
-        $module_css_files = new ModuleCssFiles();
-        $module_css_files->adding_running_module_displayed_file('easycss.css');
-        return $module_css_files;
+        $tpl = new FileTemplate('easycss/fields/EasyCssTransparencyField.tpl');
+        $tpl->put_all(array(
+            'NAME' => __CLASS__ . '_' . $this->id,
+            'ID' => __CLASS__ . '_' . $this->id,
+            'HTML_ID' => __CLASS__ . '_' . $this->id,
+            'VALUE' => $this->transparency,
+            'LABEL' => $label
+        ));
+        return $tpl;
     }
 
 }

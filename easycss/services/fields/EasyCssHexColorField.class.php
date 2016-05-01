@@ -1,10 +1,10 @@
 <?php
 
 /* #################################################
- *                           EasyCssColorElement.class.php
+ *                           EasyCssHexColorField.class.php
  *                            -------------------
- *   begin                : 2016/04/22
- *   copyright            : (C) 2016 PaperToss
+ *   begin                : 2016/04/29
+ *   copyright            : (C) 2016 Toss
  *   email                : t0ssp4p3r@gmail.com
  *
  *
@@ -27,35 +27,40 @@
   ################################################### */
 
 /**
- * Description of EasyCssColorElement
+ * Description of EasyCssHexColorField
  *
  * @author Toss
  */
-class EasyCssColorElement extends EasyCssAbstractElement
+class EasyCssHexColorField
 {
-
-    /** Couleur de la forme color : #abcdef ; */
-    public static $regex = '`color *: *#([a-f0-9]{3,6}) *;`isU';
-
-    public static $can_modify = true;
+    protected $color;
     
-    public function __construct($id, $value)
+    protected $id;
+    
+    public function __construct($id, $color)
     {
-        if (substr($value,0,1) == '#' ) $value = substr($value,1);
+        if (substr($color,0,1) == '#' )
+                $color = substr($color,1);
+        $this->color = $color;
         $this->id = $id;
-        $this->value = $value;
     }
     
-    public function createFormElement(\FormFieldsetHTML $fieldset)
+    public function getColor()
     {
-        $field = new FormFieldColorPicker(__CLASS__ . '_' . $this->id, LangLoader::get_message('color_description', 'common', 'easycss') . ' : ', '#' . $this->value);
-        $fieldset->add_field($field);
-        return $fieldset;
+        return $this->color;
     }
-    
-    public function getTextToFile()
+
+    public function getForm($label)
     {
-        return 'color : #' . $this->value .' ;';
+        $tpl = new FileTemplate('easycss/fields/EasyCssColorField.tpl');
+        $tpl->put_all(array(
+            'NAME' => __CLASS__ . '_' . $this->id,
+            'ID' => __CLASS__ . '_' . $this->id,
+            'HTML_ID' => __CLASS__ . '_' . $this->id,
+            'VALUE' => '#' . $this->color,
+            'LABEL' => $label,
+        ));
+        return $tpl;
     }
 
 }

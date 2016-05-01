@@ -1,7 +1,7 @@
 <?php
 
 /* #################################################
- *                           EasyCssTitleElement.class.php
+ *                           EasyCssHexColorElement.class.php
  *                            -------------------
  *   begin                : 2016/04/22
  *   copyright            : (C) 2016 PaperToss
@@ -27,27 +27,45 @@
   ################################################### */
 
 /**
- * Description of EasyCssTitleElement
+ * Description of EasyCssHexColorElement
  *
  * @author Toss
  */
-class EasyCssTitleElement extends EasyCssAbstractElement
+class EasyCssHexColorElement extends EasyCssAbstractElement
 {
 
-    /** Titre de la forme /** ---- Mon titre ---- */ /**/
-    public static $regex = '`\/\*\*\s*-{3,}\s*\b(.+)\s*-{3,}\s*\*\/`isU';
-    
-    public static $can_modify = false;
+    /** Couleur de la forme color : rgba( ; */
+    public static $regex = '`color *: *#([a-f0-9]{3,6}) *;`isU';
 
-    public function createFormElement(\FormFieldsetHTML $fieldset)
-    {
-        $field = new FormFieldHTML(__CLASS__ . '_' . $this->id, '<h3>' . $this->value . '</h3>');
-        $fieldset->add_field($field);
-        return $fieldset;
+    /** @var boolean modifiable */
+    public static $can_modify = true;
+    
+    /** @var \EasyCssHexColorField */
+    protected $color;
+
+    public function __construct($id, $value)
+    {        
+        $this->color = new EasyCssHexColorField($id, $value);
+        $this->id = $id;
     }
+
+    public function createFormElement()
+    {
+        $color_tpl = $this->color->getForm(LangLoader::get_message('color_description', 'common', 'easycss'));
+        $begin = new StringTemplate('<div class="form-field">');
+        $end = new StringTemplate('</div>');
+        return array($begin, $color_tpl,$end);
+    }
+    
+    public static function constructFromPost($id, \HTTPRequestCustom $request)
+    {
+        $hexcolor = $request->get_poststring('EasyCssHexColorField_' . $id, false);
+        return new self($id, $hexcolor);
+    }
+
     public function getTextToFile()
     {
-        return '/** --- ' . $this->value . ' --- */';
+        return 'color : #' . $this->color->getColor() .';';
     }
 
 }

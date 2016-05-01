@@ -37,3 +37,4 @@ $lang['theme_choice'] = 'Choix du thème';
 $lang['file_edit_success'] = 'Le fichier a bien été modifié';
 
 $lang['color_description'] = 'Couleur';
+$lang['transparency_description'] = 'Opacité';

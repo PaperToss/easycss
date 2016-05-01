@@ -1,10 +1,10 @@
 <?php
 
 /* #################################################
- *                           EasycssExtensionPointProvider.class.php
+ *                           EasyCssTitleElement.class.php
  *                            -------------------
- *   begin                : 2016/00/22
- *   copyright            : (C) 2016 Toss
+ *   begin                : 2016/04/22
+ *   copyright            : (C) 2016 PaperToss
  *   email                : t0ssp4p3r@gmail.com
  *
  *
@@ -27,28 +27,42 @@
   ################################################### */
 
 /**
- * Provide phpboost services
+ * Description of EasyCssTitleElement
  *
- * @author PaperToss
+ * @author Toss
  */
-class EasycssExtensionPointProvider extends ExtensionPointProvider
+class EasyCssTitleElement extends EasyCssAbstractElement
 {
 
-    public function __construct()
+    /** Titre de la forme /** ---- Mon titre ---- */ /**/
+    public static $regex = '`\/\*\*\s*-{3,}\s*\b(.+)\s*-{3,}\s*\*\/`isU';
+
+    /** @var boolean Non modifiable */
+    public static $can_modify = false;
+    
+    /** @var \EasyCssTitleField */
+    protected $title;
+
+    public function __construct($id, $title)
     {
-        parent::__construct('easycss');
+        $this->title = new EasyCssTitleField($id, $title);
+        $this->id = $id;
     }
 
-    public function url_mappings()
+    public function createFormElement()
     {
-        return new UrlMappings(array(new DispatcherUrlMapping('/easycss/index.php', '([\w/_-]*)$')));
+        $title_tpl = $this->title->getForm(false);
+        return array($title_tpl);
     }
     
-    public function css_files()
+    public static function constructFromPost($id, \HTTPRequestCustom $request)
     {
-        $module_css_files = new ModuleCssFiles();
-        $module_css_files->adding_running_module_displayed_file('easycss.css');
-        return $module_css_files;
+        return false;
+    }
+
+    public function getTextToFile()
+    {
+        return '/** --- ' . $this->title->getTitle() . ' --- */';
     }
 
 }

@@ -3,6 +3,7 @@ ul.tabs{
     padding: 0px;
     list-style: none;
 }
+
 ul.tabs li{
     background: none;
     color: #222;
@@ -25,3 +26,31 @@ ul.tabs li.current{
 .tab-content.current{
     display: inherit;
 }
+
+.easycss-element {
+    width: 24%;
+    margin-right: 1%;
+    display: inline-block;
+}
+
+.easycss-field {
+    width: 100%;
+    margin-bottom: 10px;
+    padding:5px;
+    background-color: #fff;
+    box-shadow: 0 0px 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+
+
+/* Fields */
+input[type="text"], input[type="url"], input[type="number"], input[type="color"] {
+    padding:5px;
+    width: 80px;
+    height:30px;
+    margin:3px;
+}
+
+    
+
+    

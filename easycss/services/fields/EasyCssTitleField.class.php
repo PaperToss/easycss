@@ -1,10 +1,10 @@
 <?php
 
 /* #################################################
- *                           EasyCssAbstractElement.class.php
+ *                           EasyCssTitleField.class.php
  *                            -------------------
- *   begin                : 2016/04/22
- *   copyright            : (C) 2016 PaperToss
+ *   begin                : 2016/04/29
+ *   copyright            : (C) 2016 Toss
  *   email                : t0ssp4p3r@gmail.com
  *
  *
@@ -27,39 +27,34 @@
   ################################################### */
 
 /**
- * Description of EasyCssAbstractElement
+ * Description of EasyCssTitleField
  *
  * @author Toss
  */
-abstract class EasyCssAbstractElement
+class EasyCssTitleField
 {
-    /** @var string     Regex de l'élément */
-    public static $regex;
-    
-    /** @var string     Texte à remettre dans le fichier CSS */
-    public static $css_text;
-    
-    /** @var bool       Elément modifiable */
-    public static $can_modify;
-    
-    protected $id, $value;
-    
-    public function __construct($id, $value)
+
+    protected $title;
+    protected $id;
+
+    public function __construct($id, $title)
     {
+        $this->title = $title;
         $this->id = $id;
-        $this->value = $value;
     }
-    
-    abstract public function createFormElement(\FormFieldsetHTML $fieldset);
-    
-    abstract public function getTextToFile();
 
-
-    public static function replace($matches)
+    public function getTitle()
     {
-        AdminEasyCssEditController::$counter++;
-        $class = get_called_class();
-        AdminEasyCssEditController::$vars[AdminEasyCssEditController::$counter] = new $class(AdminEasyCssEditController::$counter, $matches[1]);
-        return '###' . AdminEasyCssEditController::$counter . '/###';
+        return $this->title;
     }
+
+    public function getForm($label)
+    {
+        $tpl = new FileTemplate('easycss/fields/EasyCssTitleField.tpl');
+        $tpl->put_all(array(
+            'VALUE' => $this->title,
+        ));
+        return $tpl;
+    }
+
 }
