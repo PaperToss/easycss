@@ -1,10 +1,10 @@
 <?php
 
 /* #################################################
- *                           EasyCssCommentElement.class.php
+ *                           EasyCssTitleBlock.class.php
  *                            -------------------
- *   begin                : 2016/04/22
- *   copyright            : (C) 2016 PaperToss
+ *   begin                : 2016/00/04
+ *   copyright            : (C) 2016 Toss
  *   email                : t0ssp4p3r@gmail.com
  *
  *
@@ -27,42 +27,33 @@
   ################################################### */
 
 /**
- * Description of EasyCssCommentElement
+ * Description of EasyCssTitleBlock
  *
  * @author Toss
  */
-class EasyCssCommentElement extends EasyCssAbstractElement
+class EasyCssTitleBlock extends EasyCssAbstractBlock
 {
 
-    /** Titre de la forme /** Commentaire */ /**/
-    public static $regex = '`\/\*\*\s*(.+)\s*\*\/`isU';
-
-    /** @var boolean Non modifiable */
-    public static $can_modify = false;
+    public $to_display = true;
     
-    /** @var \EasyCssCommentField */
+    /** @var \EasyCssTitleField */
     protected $title;
 
-    public function __construct($id, $title)
+    public function __construct($id, $parent_id, $title)
     {
-        $this->title = new EasyCssCommentField($id, $title);
+        $this->title = new EasyCssTitleField($id, $title);
         $this->id = $id;
+        $this->parent_id = $parent_id;
     }
 
-    public function createFormElement()
+    public function get_templates()
     {
         $title_tpl = $this->title->getForm(false);
         return array($title_tpl);
     }
     
-    public static function constructFromPost($id, \HTTPRequestCustom $request)
+    public function get_css_to_save()
     {
-        return false;
+        return "\n".'/** ---' . $this->title->getTitle() . '--- */'; 
     }
-
-    public function getTextToFile()
-    {
-        return '/** ' . $this->title->getComment() . ' */';
-    }
-
 }

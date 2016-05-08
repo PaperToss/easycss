@@ -39,9 +39,7 @@ class EasyCssHexColorField
     
     public function __construct($id, $color)
     {
-        if (substr($color,0,1) == '#' )
-                $color = substr($color,1);
-        $this->color = $color;
+        $this->setValue($color);
         $this->id = $id;
     }
     
@@ -54,13 +52,36 @@ class EasyCssHexColorField
     {
         $tpl = new FileTemplate('easycss/fields/EasyCssColorField.tpl');
         $tpl->put_all(array(
-            'NAME' => __CLASS__ . '_' . $this->id,
-            'ID' => __CLASS__ . '_' . $this->id,
-            'HTML_ID' => __CLASS__ . '_' . $this->id,
+            'NAME' => $this->id,
+            'ID' => $this->id,
+            'HTML_ID' => $this->id,
             'VALUE' => '#' . $this->color,
             'LABEL' => $label,
         ));
         return $tpl;
+    }
+    
+    public function setValue($color)
+    {
+        $color=trim($color);
+        if (substr($color,0,1) == '#' )
+                $color = substr($color,1);
+        if (strlen($color) == 3)
+        {
+            $str = '';
+            for ($i=0; $i<= 2; $i++)
+            {
+                $str .= str_repeat(substr($color, $i, 1),2);
+            }
+            $color = $str;
+        }
+        if ($this->color == $color)
+        {
+            return false;
+        }
+        $this->color = $color;
+        return $this->color;
+        
     }
 
 }

@@ -41,12 +41,6 @@ class AdminEasyCssEditController extends ModuleController
     /** @var array          Array de langue */
     private $lang;
 
-    /** @var \HTMLForm      Formulaire */
-    private $form;
-
-    /** @var \FormFieldsetHTML      Contenant des champs */
-    private $fieldset;
-
     /** @var \File          Fichier CSS chargé */
     private $file;
 
@@ -64,9 +58,8 @@ class AdminEasyCssEditController extends ModuleController
 
     /** @var string         Contenu du fichier parsé */
     private $parsed_content;
-
-    /** @var \EasyCssAbstractElement array */
-    private $elements = ['EasyCssTitleElement', 'EasyCssColorElement'];
+    private static $hidden_input_content = '';
+    private $main_block;
 
     /**
      * Exécution de la page
@@ -79,18 +72,17 @@ class AdminEasyCssEditController extends ModuleController
         $this->get_file($request);
         $this->init();
 
-        $this->build_form();
-        $this->do_preg_replace();
-
-        $this->fieldset = new FormFieldsetHTML($this->theme_id, $this->theme_id . ' - ' . $this->css_id);
-        $this->form->add_fieldset($this->fieldset);
-
+        $this->create_objects_elements();
+        
         if ($request->is_post_method())
+        {
             $this->post_process($request);
+        }
+            
 
-        $this->build_elements_to_display();
-
-        $this->finalize_form();
+        $this->put_templates();
+        
+        
 
         return $this->build_response($this->view);
     }
@@ -101,7 +93,7 @@ class AdminEasyCssEditController extends ModuleController
     private function init()
     {
         $this->lang = LangLoader::get('common', 'easycss');
-        $this->view = new StringTemplate('# INCLUDE MSG # # INCLUDE FORM #');
+        $this->view = new FileTemplate('easycss/AdminEditController.tpl');
         $this->view->add_lang($this->lang);
     }
 
@@ -125,24 +117,30 @@ class AdminEasyCssEditController extends ModuleController
             DispatchManager::redirect(PHPBoostErrors::unexisting_page());
     }
 
-    /**
-     * Création du formulaire
-     */
-    private function build_form()
+    private function create_objects_elements()
     {
-        $form = new HTMLForm(__CLASS__);
-        $this->form = $form;
+        $css = $this->file->read();
+        $this->main_block = new EasyCssMainBlock($css);
+    }
+    
+    private function put_templates()
+    {
+        $forms_tpl = $this->main_block->get_templates();
+        foreach ($forms_tpl as $tpl)
+        {
+            $tpls[] = array('SUBTEMPLATE' => $tpl);
+        }
+        $this->view->put('elements', $tpls);
+        $this->view->put('ELEMENTS_FIELDS', self::$hidden_input_content);
     }
 
-    /**
-     * Finalisation du formulaire
-     */
-    private function finalize_form()
+    private function post_process(\HTTPRequestCustom $request)
     {
-        $button = new FormButtonDefaultSubmit();
-        $this->form->add_button($button);
-        $this->form->add_button(new FormButtonReset());
-        $this->view->put('FORM', $this->form->display());
+        $post_elements = $request->get_poststring(__CLASS__ . '_elements_fields', false);
+        $this->main_block->replace_with_post($post_elements, $request);
+        $this->write_to_file();
+        $this->clear_css_cache();
+        $this->view->put('MSG', MessageHelper::display($this->lang['file_edit_success'], MessageHelper::SUCCESS, 5));
     }
 
     /**
@@ -159,88 +157,14 @@ class AdminEasyCssEditController extends ModuleController
     }
 
     /**
-     * Traitement des preg_replace
-     * 
-     * Pour chaque élément contenu dans $this->vars, on teste la présence de son attribut $regex
-     * Et on lance la fonction replace de la classe concernée
-     */
-    private function do_preg_replace()
-    {
-        $this->parsed_content = $this->file->read();
-
-        foreach ($this->elements as $element)
-        {
-            $this->parsed_content = preg_replace_callback($element::$regex, array($element, 'replace'), $this->parsed_content);
-        }
-    }
-
-    /**
-     * Processus de récupération des paramètres POST
-     * 
-     * @param \HTTPRequestCustom $request
-     */
-    private function post_process(\HTTPRequestCustom $request)
-    {
-        $post_elements = $request->get_poststring(__CLASS__ . '_elements', false);
-        $elements = explode('-', $post_elements);
-        foreach ($elements as $element)
-        {
-            if ($element == '')
-                break 1;
-            $exploded_element = explode('_', $element);
-            $classname = $exploded_element[0];
-            $id = $exploded_element[1];
-            $value = $request->get_poststring(__CLASS__ . '_' . $element, false);
-            if ($classname::$can_modify)
-                self::$vars[$id] = new $classname($id, $value);
-        }
-        $this->write_to_file();
-        $this->clear_css_cache();
-        $this->view->put('MSG', MessageHelper::display($this->lang['file_edit_success'], MessageHelper::SUCCESS, 5));
-    }
-
-    /**
      * Ecriture du fichier CSS
      */
     private function write_to_file()
     {
-        $lines = explode("\n", $this->parsed_content);
-        $css = '';
-        foreach ($lines as &$line)
-        {
-            $line = preg_replace_callback('`###(\d+)\/###`isU', function($matches)
-            {
-                $obj = self::$vars[$matches[1]];
-                return $obj->getTextToFile();
-            }, $line);
-            $css .= $line . "\n";
-        }
-        $this->file->write($css);
+        $this->file->write(trim($this->main_block->get_css_to_save()));
+        $this->clear_css_cache();
     }
-    
-    /**
-     * Création des éléments Form à afficher sur la page
-     */
-    private function build_elements_to_display()
-    {
-        $textarea_content = '';
 
-        $lines = explode("\n", $this->parsed_content);
-
-        foreach ($lines as $line)
-        {
-            if (preg_match('`###(\d+)\/###`isU', $line, $matches))
-            {
-                $obj = self::$vars[$matches[1]];
-                $this->fieldset = $obj->createFormElement($this->fieldset);
-
-                $textarea_content .= get_class($obj) . '_' . $matches[1] . '-';
-            }
-        }
-        $textarea = new FormFieldHidden('elements', $textarea_content);
-        $this->fieldset->add_field($textarea);
-    }
-    
     /**
      * Suppression du cache CSS si activé
      */
@@ -251,6 +175,11 @@ class AdminEasyCssEditController extends ModuleController
         {
             AppContext::get_cache_service()->clear_css_cache();
         }
+    }
+
+    public static function add_field_to_hidden_input($id)
+    {
+        self::$hidden_input_content .= $id . ';';
     }
 
 }

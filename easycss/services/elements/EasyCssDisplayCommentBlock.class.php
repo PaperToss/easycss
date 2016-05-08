@@ -1,9 +1,9 @@
 <?php
 
 /* #################################################
- *                           EasyCssTransparencyField.class.php
+ *                           EasyCssTitleBlock.class.php
  *                            -------------------
- *   begin                : 2016/04/29
+ *   begin                : 2016/00/04
  *   copyright            : (C) 2016 Toss
  *   email                : t0ssp4p3r@gmail.com
  *
@@ -27,48 +27,34 @@
   ################################################### */
 
 /**
- * Description of EasyCssTransparencyField
+ * Description of EasyCssTitleBlock
  *
- * @author PaperToss
+ * @author Toss
  */
-class EasyCssTransparencyField
+class EasyCssDisplayCommentBlock extends EasyCssAbstractBlock
 {
+    public $id;
 
-    protected $transparency;
-    protected $id;
+    public $to_display = true;
+    
+    /** @var \EasyCssDisplayCommentField */
+    protected $title;
 
-    public function __construct($id, $transparency)
+    public function __construct($id, $parent_id, $title)
     {
-        $this->transparency = $transparency;
-        $this->id = $id . __CLASS__;
+        $this->title = new EasyCssDisplayCommentField($id, $title);
+        $this->id = $id;
+        $this->parent_id = $parent_id;
     }
 
-    public function getTransparency()
+    public function get_templates()
     {
-        return $this->transparency;
-    }
-
-    public function getForm($label)
-    {
-        $tpl = new FileTemplate('easycss/fields/EasyCssTransparencyField.tpl');
-        $tpl->put_all(array(
-            'NAME' => $this->id,
-            'ID' => $this->id,
-            'HTML_ID' => $this->id,
-            'VALUE' => $this->transparency,
-            'LABEL' => $label
-        ));
-        return $tpl;
+        $title_tpl = $this->title->getForm(false);
+        return array($title_tpl);
     }
     
-    public function setValue($transparency)
+    public function get_css_to_save()
     {
-        if ($this->transparency == $transparency)
-        {
-            return false;
-        }
-        $this->transparency = $transparency;
-        return $this->transparency;
+        return "\n".'/**' . $this->title->getTitle() . '*/'; 
     }
-
 }

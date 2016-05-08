@@ -1,9 +1,9 @@
 <?php
 
 /* #################################################
- *                           EasyCssTransparencyField.class.php
+ *                           EasyCssCommentBlock.class.php
  *                            -------------------
- *   begin                : 2016/04/29
+ *   begin                : 2016/00/04
  *   copyright            : (C) 2016 Toss
  *   email                : t0ssp4p3r@gmail.com
  *
@@ -27,48 +27,27 @@
   ################################################### */
 
 /**
- * Description of EasyCssTransparencyField
+ * Description of EasyCssCommentBlock
  *
- * @author PaperToss
+ * @author Toss
  */
-class EasyCssTransparencyField
+class EasyCssCommentBlock extends EasyCssAbstractBlock
 {
-
-    protected $transparency;
-    protected $id;
-
-    public function __construct($id, $transparency)
+    public $id;
+    
+    public $title;
+    
+    public $to_display = false;
+    
+    public function __construct($id, $parent_id, $title)
     {
-        $this->transparency = $transparency;
-        $this->id = $id . __CLASS__;
-    }
-
-    public function getTransparency()
-    {
-        return $this->transparency;
-    }
-
-    public function getForm($label)
-    {
-        $tpl = new FileTemplate('easycss/fields/EasyCssTransparencyField.tpl');
-        $tpl->put_all(array(
-            'NAME' => $this->id,
-            'ID' => $this->id,
-            'HTML_ID' => $this->id,
-            'VALUE' => $this->transparency,
-            'LABEL' => $label
-        ));
-        return $tpl;
+        $this->id = $id;
+        $this->title = $title;
+        $this->parent_id = $parent_id;
     }
     
-    public function setValue($transparency)
+    public function get_css_to_save()
     {
-        if ($this->transparency == $transparency)
-        {
-            return false;
-        }
-        $this->transparency = $transparency;
-        return $this->transparency;
+        return "\n".'/*' . $this->title . '*/'; 
     }
-
 }

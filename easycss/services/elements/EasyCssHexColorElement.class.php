@@ -34,38 +34,41 @@
 class EasyCssHexColorElement extends EasyCssAbstractElement
 {
 
-    /** Couleur de la forme color : rgba( ; */
-    public static $regex = '`color *: *#([a-f0-9]{3,6}) *;`isU';
-
     /** @var boolean modifiable */
     public static $can_modify = true;
     
+    public $to_display = true;
+    
     /** @var \EasyCssHexColorField */
     protected $color;
+    
+    
 
-    public function __construct($id, $value)
-    {        
-        $this->color = new EasyCssHexColorField($id, $value);
+    public function __construct($id, $parent_id, $value)
+    {
+        $this->parent_id = $parent_id;
+        $this->color = new EasyCssHexColorField($parent_id . '/' . $id, $value);
         $this->id = $id;
     }
 
-    public function createFormElement()
+    public function get_templates()
     {
         $color_tpl = $this->color->getForm(LangLoader::get_message('color_description', 'common', 'easycss'));
         $begin = new StringTemplate('<div class="easycss-field">');
         $end = new StringTemplate('</div>');
+        AdminEasyCssEditController::add_field_to_hidden_input($this->parent_id . '/' . $this->id);
         return array($begin, $color_tpl,$end);
-    }
-    
-    public static function constructFromPost($id, \HTTPRequestCustom $request)
-    {
-        $hexcolor = $request->get_poststring('EasyCssHexColorField_' . $id, false);
-        return new self($id, $hexcolor);
     }
 
     public function getTextToFile()
     {
         return 'color : #' . $this->color->getColor() .';';
+    }
+    
+    public function setValueFromPost(\HTTPRequestCustom $request)
+    {
+        $color_value = $request->get_poststring($this->parent_id . '/' . $this->id, false);
+        return $this->color->setValue($color_value);
     }
 
 }

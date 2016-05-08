@@ -1,10 +1,10 @@
 <?php
 
 /* #################################################
- *                           EasyCssTitleElement.class.php
+ *                           EasyCssTitleField.class.php
  *                            -------------------
- *   begin                : 2016/04/22
- *   copyright            : (C) 2016 PaperToss
+ *   begin                : 2016/04/29
+ *   copyright            : (C) 2016 Toss
  *   email                : t0ssp4p3r@gmail.com
  *
  *
@@ -27,42 +27,34 @@
   ################################################### */
 
 /**
- * Description of EasyCssTitleElement
+ * Description of EasyCssTitleField
  *
  * @author Toss
  */
-class EasyCssTitleElement extends EasyCssAbstractElement
+class EasyCssDisplayCommentField
 {
 
-    /** Titre de la forme /** ---- Mon titre ---- */ /**/
-    public static $regex = '`\/\*\*\s*-{3,}\s*\b(.+)\s*-{3,}\s*\*\/`isU';
-
-    /** @var boolean Non modifiable */
-    public static $can_modify = false;
-    
-    /** @var \EasyCssTitleField */
     protected $title;
+    protected $id;
 
     public function __construct($id, $title)
     {
-        $this->title = new EasyCssTitleField($id, $title);
+        $this->title = $title;
         $this->id = $id;
     }
 
-    public function createFormElement()
+    public function getTitle()
     {
-        $title_tpl = $this->title->getForm(false);
-        return array($title_tpl);
-    }
-    
-    public static function constructFromPost($id, \HTTPRequestCustom $request)
-    {
-        return false;
+        return $this->title;
     }
 
-    public function getTextToFile()
+    public function getForm($label)
     {
-        return '/** --- ' . $this->title->getTitle() . ' --- */';
+        $tpl = new FileTemplate('easycss/fields/EasyCssDisplayCommentField.tpl');
+        $tpl->put_all(array(
+            'VALUE' => $this->title,
+        ));
+        return $tpl;
     }
 
 }

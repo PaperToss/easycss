@@ -39,7 +39,18 @@ abstract class EasyCssAbstractElement
     /** @staticvar bool       Elément modifiable */
     public static $can_modify;
     
-    protected $id;
+    /** @staticvar bool       Elément affiché */
+    public $to_display;
+    
+    public $id;
+    
+    public $parent_id;
+    
+    /** @var \EasyCssAbstractElement array */
+    public static $elements = array(
+        'EasyCssHexColorElement' => '`(?<=[^-])color\s*:\s*#([a-f0-9]{3,6})\s*;`isU',
+        'EasyCssRGBAColorElement' => '`(?<=[^-])color\s*:\s*rgba\s*\(\s*(.+)\s*\)\s*;`isU',
+    );
     
     /**
      * @abstract
@@ -50,7 +61,7 @@ abstract class EasyCssAbstractElement
      * @param string    $id     ID de remplacement
      * @param string    $value  Valeur du champ tel qu'écrit dans le fichier CSS
      */
-    abstract public function __construct($id, $value);
+    //abstract public function __construct(); 
     
     /**
      * @abstract
@@ -61,34 +72,8 @@ abstract class EasyCssAbstractElement
      */
     abstract public function getTextToFile();
     
-    /**
-     * @abstract
-     * @static
-     * Constructeur depuis le POST
-     * Créé une instance de cette même classe en allant récupérer les paramètres POST
-     * 
-     * @param   string                  $id ID de remplacement qui permettra d'aller récupérer les paramètres POST
-     * @param   \HTTPRequestCustom      $request Fournit l'accès aux paramètres HTTP
-     * @return  \EasyCssAbstractElement Instance de cette même classe
-     */
-    abstract public static function constructFromPost($id, \HTTPRequestCustom $request);
-
-    /**
-     * @final
-     * @static
-     * Fonction de remplacement lors du parsage
-     * Fonction qui sera exécutée lors du preg_replace_callback pour repérer les champs à inclure à l'affichage
-     * 
-     * @param array $matches    Résultats de recherche du preg_replace_callback
-     * @return string           Texte de remplacement
-     */
-    final public static function replace($matches)
+    public function getChildName()
     {
-        AdminEasyCssEditController::$counter++;
-        $class = get_called_class();
-        
-        AdminEasyCssEditController::$vars[AdminEasyCssEditController::$counter] = new $class(AdminEasyCssEditController::$counter, $matches[1]);
-        return '###' . AdminEasyCssEditController::$counter . '/###';
+        return get_called_class();
     }
-    
 }

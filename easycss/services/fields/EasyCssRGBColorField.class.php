@@ -47,7 +47,7 @@ class EasyCssRGBColorField
         $g = self::RGBtoHex($values[1]);
         $b = self::RGBtoHex($values[2]);
         $this->HexColor = $r . $g . $b;
-        $this->id = $id;
+        $this->id = $id . __CLASS__;
     }
     
     public function getHexColor()
@@ -64,15 +64,29 @@ class EasyCssRGBColorField
     {
         $tpl = new FileTemplate('easycss/fields/EasyCssColorField.tpl');
         $tpl->put_all(array(
-            'NAME' => __CLASS__ . '_' . $this->id,
-            'ID' => __CLASS__ . '_' . $this->id,
-            'HTML_ID' => __CLASS__ . '_' . $this->id,
+            'NAME' =>$this->id,
+            'ID' => $this->id,
+            'HTML_ID' => $this->id,
             'VALUE' => '#' . $this->HexColor,
             'LABEL' => $label,
         ));
         return $tpl;
     }
 
+    public function setValue($hexcolor)
+    {
+        $rgbcolor = self::HexToRBG($hexcolor);
+        if ($this->RGBColor == $rgbcolor)
+        {
+            return false;
+        }
+        $this->RGBColor = $rgbcolor;
+        if (substr($hexcolor,0,1) == '#' )
+                $hexcolor = substr($hexcolor,1);
+        $this->HexColor = $hexcolor;
+        return $this->RGBColor;
+    }
+    
     public static function RGBtoHex($n)
     {
         $n = intval($n);

@@ -1,9 +1,9 @@
 <?php
 
 /* #################################################
- *                           EasyCssCommentField.class.php
+ *                           EasyCssGenericElement.class.php
  *                            -------------------
- *   begin                : 2016/04/29
+ *   begin                : 2016/05/04
  *   copyright            : (C) 2016 Toss
  *   email                : t0ssp4p3r@gmail.com
  *
@@ -27,34 +27,32 @@
   ################################################### */
 
 /**
- * Description of EasyCssCommentField
+ * Description of EasyCssGenericElement
  *
  * @author Toss
  */
-class EasyCssCommentField
+class EasyCssGenericElement extends EasyCssAbstractElement
 {
-
-    protected $title;
-    protected $id;
-
-    public function __construct($id, $title)
+    public $id;
+    public $attribut;
+    
+    public $value;
+    
+    public $to_display = false;
+    
+    public static $can_modify = false;
+    
+    public function __construct($id, $parent_id, $attribut, $value)
     {
-        $this->title = $title;
         $this->id = $id;
+        $this->attribut = $attribut;
+        $this->value = $value;
+        $this->parent_id = $parent_id;
     }
-
-    public function getComment()
+    
+    public function getTextToFile()
     {
-        return $this->title;
+        return $this->attribut . ' : ' . $this->value . ';';
     }
-
-    public function getForm($label)
-    {
-        $tpl = new FileTemplate('easycss/fields/EasyCssCommentField.tpl');
-        $tpl->put_all(array(
-            'VALUE' => $this->title,
-        ));
-        return $tpl;
-    }
-
+    
 }
