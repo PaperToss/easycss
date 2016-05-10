@@ -88,7 +88,7 @@ class EasyCssBlock extends EasyCssAbstractBlock
         $path = explode('/', $path_child);
         $child = $path[0];
         array_shift($path);
-        return $this->children[$child]->setValueFromPost( $request);
+        return $this->children[$child]->setValueFromPost($request);
     }
     
     public function getChildName($path_child)
@@ -101,21 +101,10 @@ class EasyCssBlock extends EasyCssAbstractBlock
     }
     
     public function get_css_to_save()
-    {
-        $css = "\n" . $this->get_spaces(). $this->tag . "{\n";
-
-        $lines = explode("\n", $this->parsed_css);
-        foreach ($lines as $line)
-        {
-            
-            if (preg_match('`###(\d+)\/###`isU', $line, $matches))
-            {
-                /** @var \EasyCssAbstractBlock $block */       
-                $elem = $this->children[$matches[1]];
-                $css.= $this->get_spaces() . '    ' . $elem->getTextToFile() . "\n";
-            }
-        }
-        $css = $css . $this->get_spaces() ."}\n";
+    {        
+        $css = parent::get_css_to_save();
+        $css = "\n" . $this->get_spaces(). $this->tag . " {\n" . $css;
+        $css = $css . $this->get_spaces() . "}\n";
         return $css;
     }
     

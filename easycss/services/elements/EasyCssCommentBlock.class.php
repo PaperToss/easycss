@@ -48,6 +48,10 @@ class EasyCssCommentBlock extends EasyCssAbstractBlock
     
     public function get_css_to_save()
     {
-        return "\n".'/*' . $this->title . '*/'; 
+        if ($this->parent_id === '' || $this->parent_id === '/main')
+        {
+            return "\n" . '/*' . $this->title . '*/' . "\n";
+        }
+        return '/*' . $this->title . '*/' . "\n";
     }
 }

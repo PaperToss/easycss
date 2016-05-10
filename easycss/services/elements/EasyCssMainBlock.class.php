@@ -37,6 +37,7 @@ class EasyCssMainBlock extends EasyCssAbstractBlock
     public function __construct($css_content)
     {
         $this->id = 'main';
+        $this->parent_id = '';
         $this->css_content = $css_content;
         $this->parse_blocks_content();
     }
@@ -61,7 +62,7 @@ class EasyCssMainBlock extends EasyCssAbstractBlock
             if ($element == '')
                 break 1;
             $path = explode('/', $element);
-
+            
             array_shift($path);
             array_shift($path);
             $path = implode('/', $path);

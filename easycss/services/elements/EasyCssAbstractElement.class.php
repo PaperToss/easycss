@@ -33,35 +33,22 @@
  */
 abstract class EasyCssAbstractElement
 {
-    /** @staticvar string     Regex de l'élément */
-    public static $regex;
     
-    /** @staticvar bool       Elément modifiable */
-    public static $can_modify;
-    
-    /** @staticvar bool       Elément affiché */
+    /** @var bool           Elément affiché */
     public $to_display;
     
+    /** @var string         ID de l'élément */
     public $id;
     
-    public $parent_id;
+    /** @var string         ID du parent direct */
+    protected $parent_id;
     
-    /** @var \EasyCssAbstractElement array */
+    /** @var \EasyCssAbstractElement array  Eléments à parser*/
     public static $elements = array(
         'EasyCssHexColorElement' => '`(?<=[^-])color\s*:\s*#([a-f0-9]{3,6})\s*;`isU',
         'EasyCssRGBAColorElement' => '`(?<=[^-])color\s*:\s*rgba\s*\(\s*(.+)\s*\)\s*;`isU',
     );
     
-    /**
-     * @abstract
-     * Constructeur de la classe
-     * 
-     * Doit stocker l'id et si nécessaire, traiter $value qui contient toutes les valeurs du champ dans le fichier CSS
-     * 
-     * @param string    $id     ID de remplacement
-     * @param string    $value  Valeur du champ tel qu'écrit dans le fichier CSS
-     */
-    //abstract public function __construct(); 
     
     /**
      * @abstract

@@ -83,7 +83,7 @@ class EasyCssMediaBlock extends EasyCssAbstractBlock
     public function get_css_to_save()
     {
         $css = parent::get_css_to_save();
-        $css = "@media (" . $this->type . ": " . $this->size . ") {" . $css;
+        $css = "\n@media (" . $this->type . ": " . $this->size . ") {\n" . $css;
         $css = $css . "}\n";
         return $css;
     }

@@ -34,15 +34,10 @@
 class EasyCssHexColorElement extends EasyCssAbstractElement
 {
 
-    /** @var boolean modifiable */
-    public static $can_modify = true;
-    
     public $to_display = true;
-    
+
     /** @var \EasyCssHexColorField */
     protected $color;
-    
-    
 
     public function __construct($id, $parent_id, $value)
     {
@@ -57,14 +52,14 @@ class EasyCssHexColorElement extends EasyCssAbstractElement
         $begin = new StringTemplate('<div class="easycss-field">');
         $end = new StringTemplate('</div>');
         AdminEasyCssEditController::add_field_to_hidden_input($this->parent_id . '/' . $this->id);
-        return array($begin, $color_tpl,$end);
+        return array($begin, $color_tpl, $end);
     }
 
     public function getTextToFile()
     {
-        return 'color : #' . $this->color->getColor() .';';
+        return 'color : #' . $this->color->getColor() . ';';
     }
-    
+
     public function setValueFromPost(\HTTPRequestCustom $request)
     {
         $color_value = $request->get_poststring($this->parent_id . '/' . $this->id, false);

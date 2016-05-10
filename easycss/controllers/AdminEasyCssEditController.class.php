@@ -56,9 +56,10 @@ class AdminEasyCssEditController extends ModuleController
     /** @var array          Elements remplacés */
     public static $vars;
 
-    /** @var string         Contenu du fichier parsé */
-    private $parsed_content;
+    /** @staticvar string   Contenu du champ hidden (ID des éléments à modifier) */
     private static $hidden_input_content = '';
+
+    /** @var \EasyCssMainBlock  Bloc Principal du CSS */
     private $main_block;
 
     /**
@@ -73,16 +74,13 @@ class AdminEasyCssEditController extends ModuleController
         $this->init();
 
         $this->create_objects_elements();
-        
+
         if ($request->is_post_method())
         {
             $this->post_process($request);
         }
-            
 
         $this->put_templates();
-        
-        
 
         return $this->build_response($this->view);
     }
@@ -117,12 +115,19 @@ class AdminEasyCssEditController extends ModuleController
             DispatchManager::redirect(PHPBoostErrors::unexisting_page());
     }
 
+    /**
+     * Création de l'objet MainBlock et de tous ses enfants
+     * Parsage du CSS
+     */
     private function create_objects_elements()
     {
         $css = $this->file->read();
         $this->main_block = new EasyCssMainBlock($css);
     }
-    
+
+    /**
+     * Envoi des templates et du contenu du hidden à la vue
+     */
     private function put_templates()
     {
         $forms_tpl = $this->main_block->get_templates();
@@ -134,6 +139,13 @@ class AdminEasyCssEditController extends ModuleController
         $this->view->put('ELEMENTS_FIELDS', self::$hidden_input_content);
     }
 
+    /**
+     * Exécution des éléments POST
+     * Récupération du champ hidden, remplacement des objets avec les nouvelles valeurs
+     * Ecriture du CSS et suppression du cache CSS
+     * 
+     * @param \HTTPRequestCustom $request
+     */
     private function post_process(\HTTPRequestCustom $request)
     {
         $post_elements = $request->get_poststring(__CLASS__ . '_elements_fields', false);
@@ -177,6 +189,12 @@ class AdminEasyCssEditController extends ModuleController
         }
     }
 
+    /**
+     * Ajoute un élément au champ hidden
+     * 
+     * @static
+     * @param string    ID complet du champ à ajouter
+     */
     public static function add_field_to_hidden_input($id)
     {
         self::$hidden_input_content .= $id . ';';

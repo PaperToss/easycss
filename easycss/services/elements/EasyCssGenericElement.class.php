@@ -40,13 +40,11 @@ class EasyCssGenericElement extends EasyCssAbstractElement
     
     public $to_display = false;
     
-    public static $can_modify = false;
-    
     public function __construct($id, $parent_id, $attribut, $value)
     {
         $this->id = $id;
-        $this->attribut = $attribut;
-        $this->value = $value;
+        $this->attribut = trim($attribut);
+        $this->value = trim($value);
         $this->parent_id = $parent_id;
     }
     

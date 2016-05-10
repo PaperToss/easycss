@@ -33,22 +33,32 @@
  */
 abstract class EasyCssAbstractBlock
 {
+    /** @var string         ID de l'élément */
     public $id;
     
+    /** @var string         ID du parent direct */
     protected $parent_id;
     
+    /** @var string         Contenu CSS original de l'élément */
     protected $css_content;
     
+    /** @var string         Contenu du fichier parsé */
     protected $parsed_css;
     
+    /** @var array          Blocks ou éléments enfants (si EasyCssBlock) */
     protected $children = [];
     
+    /** @var integer        Compteur de remplacement */
     protected $counter = 0;
     
+    /** @var boolean        Si le contenu du bloc doit être affiché lors de l'édition */
     public $to_display;
     
-    
-    
+    /**
+     * Récupération des templates des blocs enfants
+     * 
+     * @return \FileTemplate array      Tableau de templates des enfants du bloc
+     */
     public function get_templates()
     {
         if ($this->to_display === false) return false;
@@ -58,10 +68,9 @@ abstract class EasyCssAbstractBlock
         {
             if (preg_match('`###(\d+)\/###`isU', $line, $matches))
             {
-                /** @var \EasyCssAbstractBlock $block */
-                        
-                $block = $this->children[$matches[1]];
                 
+                /* @var $block \EasyCssAbstractBlock */       
+                $block = $this->children[$matches[1]];
                 if ($block->to_display)
                 {
                     $templates = $block->get_templates();
@@ -85,8 +94,14 @@ abstract class EasyCssAbstractBlock
             {
                 /** @var \EasyCssAbstractBlock $block */       
                 $block = $this->children[$matches[1]];
-                
-                $css.= $block->get_css_to_save();
+                if (get_parent_class($block) === __CLASS__)
+                {
+                    $css.= $this->get_spaces() . '    ' . $block->get_css_to_save();
+                }
+                else
+                {
+                    $css.= $this->get_spaces() . '    ' .$block->getTextToFile() . "\n";
+                }   
             }
         }
         return $css;
@@ -104,17 +119,17 @@ abstract class EasyCssAbstractBlock
     
     protected function parse_title_block($css)
     {
-        return preg_replace_callback('`\/\*\*\s*-{3,}\s*\b(.+)\s*-{3,}\s*\*\/`isU', array($this, 'replace_parse_title_block'), $css );
+        return preg_replace_callback('`\/\*\*\s*-{3}(.+)-{3}\s*\*\/`isU', array($this, 'replace_parse_title_block'), $css );
     }
     
     protected function parse_display_comment_block($css)
     {
-        return preg_replace_callback('`\/\*\*\s*(.+)\s*\*\/`isU', array($this, 'replace_parse_display_comment_block'), $css );
+        return preg_replace_callback('`\/\*\*(.+)\*\/`isU', array($this, 'replace_parse_display_comment_block'), $css );
     }
     
     protected function parse_comment_block($css)
     {
-        return preg_replace_callback('`\/\*\s*(.+)\s*\*\/`isU', array($this, 'replace_parse_comment_block'), $css );
+        return preg_replace_callback('`\/\*(.+)\*\/`isU', array($this, 'replace_parse_comment_block'), $css );
     }
     
     protected function parse_media_block($css)
@@ -166,13 +181,12 @@ abstract class EasyCssAbstractBlock
         
         $this->counter++;
         $this->children[$this->counter] = new EasyCssBlock($this->counter, $this->parent_id .'/' . $this->id, preg_replace('/\s{2,}/', ' ', trim(str_replace("\n\n", "\n", $matches[1]))), $matches[2]);
-        return "\n" . '###' . $this->counter . '/###';
+        return "\n" . '###' . $this->counter . '/###' . "\n";
     }
     
     protected function get_spaces()
     {
-        if ($this->parent_id === '/main') return '';
-            return '    ';
-        
+        if ($this->parent_id === '' || $this->parent_id === '/main') return '';
+        return '    ';
     }
 }
