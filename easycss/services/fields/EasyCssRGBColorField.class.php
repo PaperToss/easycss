@@ -31,13 +31,11 @@
  *
  * @author Toss
  */
-class EasyCssRGBColorField
+class EasyCssRGBColorField extends EasyCssAbstractField
 {
     protected $HexColor;
     
     protected $RGBColor;
-    
-    protected $id;
     
     public function __construct($id, $rgbcolor)
     {

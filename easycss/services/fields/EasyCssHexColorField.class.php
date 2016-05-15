@@ -31,16 +31,14 @@
  *
  * @author Toss
  */
-class EasyCssHexColorField
+class EasyCssHexColorField extends EasyCssAbstractField
 {
     protected $color;
-    
-    protected $id;
     
     public function __construct($id, $color)
     {
         $this->setValue($color);
-        $this->id = $id;
+        $this->id = $id . __CLASS__;
     }
     
     public function getColor()

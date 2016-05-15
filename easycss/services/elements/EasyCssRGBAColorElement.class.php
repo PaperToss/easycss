@@ -67,22 +67,13 @@ class EasyCssRGBAColorElement extends EasyCssAbstractElement
         AdminEasyCssEditController::add_field_to_hidden_input($this->parent_id . '/' . $this->id);
         return array($begin, $color_tpl,$transp_tpl, $end);
     }
-    
-    public static function constructFromPost($id, \HTTPRequestCustom $request)
-    {
-        $hexcolor = $request->get_poststring('EasyCssRGBColorField_' . $id, false);
-        $transparency = $request->get_poststring('EasyCssTransparencyField_' . $id, false);
-        $rgbcolor = EasyCssRGBColorField::HexToRBG($hexcolor);
-        $value = $rgbcolor .',' . $transparency;
-        return new self($id, $value);
-    }
 
-    public function getTextToFile()
+    public function get_text_to_file()
     {
         return 'color : rgba(' . $this->color->getRGBColor() . ',' . $this->transparency->getTransparency() .');';
     }
     
-    public function setValueFromPost(\HTTPRequestCustom $request)
+    public function set_value_from_post(\HTTPRequestCustom $request)
     {
         $color_value = $request->get_poststring($this->parent_id . '/' . $this->id . get_class($this->color), false);
         $transparency_value = $request->get_poststring($this->parent_id . '/' . $this->id . get_class($this->transparency), false);

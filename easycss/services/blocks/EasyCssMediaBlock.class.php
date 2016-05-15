@@ -65,19 +65,19 @@ class EasyCssMediaBlock extends EasyCssAbstractBlock
         $tpls = parent::get_templates();
         if (!empty($tpls))
         {
-        array_unshift($tpls, new StringTemplate('<div class="easycss-field"><h6>' . $this->type .' : ' . $this->size . '</h6>'));
-        array_push($tpls, new StringTemplate('</div>'));
+            array_unshift($tpls, new StringTemplate('<div class="easycss-field"><h6>' . $this->type .' : ' . $this->size . '</h6>'));
+            array_push($tpls, new StringTemplate('</div>'));
         }
         return $tpls;
     }
     
-    public function getChildName($path_child)
+    public function get_child_name($path_child)
     {
         $path = explode('/', $path_child);
         $child = $path[0];
         array_shift($path);
         $path = implode('/', $path);
-        return __CLASS__ . ':' . $this->type . ':' . $this->size . '/' . $this->children[$child]->GetChildName($path);
+        return __CLASS__ . ':' . $this->type . ':' . $this->size . '/' . $this->children[$child]->get_child_name($path);
     }
 
     public function get_css_to_save()

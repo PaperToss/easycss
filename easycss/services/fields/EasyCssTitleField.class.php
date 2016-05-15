@@ -31,11 +31,10 @@
  *
  * @author Toss
  */
-class EasyCssTitleField
+class EasyCssTitleField extends EasyCssAbstractField
 {
 
     protected $title;
-    protected $id;
 
     public function __construct($id, $title)
     {

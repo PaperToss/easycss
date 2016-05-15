@@ -77,27 +77,27 @@ class EasyCssBlock extends EasyCssAbstractBlock
         $tpls = parent::get_templates();
         if (!empty($tpls))
         {
-        array_unshift($tpls, new StringTemplate('<div class="easycss-field"><h6>' . $this->tag . '</h6>'));
-        array_push($tpls, new StringTemplate('</div>'));
+            array_unshift($tpls, new StringTemplate('<div class="easycss-field"><h6>' . $this->tag . '</h6>'));
+            array_push($tpls, new StringTemplate('</div>'));
         }
         return $tpls;
     }
     
-    protected function setValueFromPost($path_child, \HTTPRequestCustom $request)
+    protected function set_value_from_post($path_child, \HTTPRequestCustom $request)
     {
         $path = explode('/', $path_child);
         $child = $path[0];
         array_shift($path);
-        return $this->children[$child]->setValueFromPost($request);
+        return $this->children[$child]->set_value_from_post($request);
     }
     
-    public function getChildName($path_child)
+    public function get_child_name($path_child)
     {
         $path = explode('/', $path_child);
         $child = $path[0];
         array_shift($path);
         $path = implode('/', $path);
-        return __CLASS__ . ':' . $this->tag . '/' . $this->children[$child]->GetChildName();
+        return __CLASS__ . ':' . $this->tag . '/' . $this->children[$child]->get_child_name();
     }
     
     public function get_css_to_save()

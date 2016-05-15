@@ -48,9 +48,14 @@ class EasyCssGenericElement extends EasyCssAbstractElement
         $this->parent_id = $parent_id;
     }
     
-    public function getTextToFile()
+    public function get_text_to_file()
     {
         return $this->attribut . ' : ' . $this->value . ';';
+    }
+    
+    public function get_templates()
+    {
+        return;
     }
     
 }

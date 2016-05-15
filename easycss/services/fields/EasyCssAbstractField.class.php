@@ -1,9 +1,9 @@
 <?php
 
 /* #################################################
- *                           EasyCssTitleField.class.php
+ *                           EasyCssAbstractField.class.php
  *                            -------------------
- *   begin                : 2016/04/29
+ *   begin                : 2016/05/15
  *   copyright            : (C) 2016 Toss
  *   email                : t0ssp4p3r@gmail.com
  *
@@ -27,33 +27,19 @@
   ################################################### */
 
 /**
- * Description of EasyCssTitleField
+ * Description of EasyCssAbstractField
  *
  * @author Toss
  */
-class EasyCssDisplayCommentField extends EasyCssAbstractField
+abstract class EasyCssAbstractField
 {
-
-    protected $title;
-
-    public function __construct($id, $title)
-    {
-        $this->title = $title;
-        $this->id = $id;
-    }
-
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    public function getForm($label)
-    {
-        $tpl = new FileTemplate('easycss/fields/EasyCssDisplayCommentField.tpl');
-        $tpl->put_all(array(
-            'VALUE' => $this->title,
-        ));
-        return $tpl;
-    }
-
+    /** @var    string  ID du champ */
+    protected $id;
+    
+    /**
+     * Récupération du template du champ
+     * 
+     * @param   string   Label à afficher
+     */
+    abstract public function getForm($label);
 }

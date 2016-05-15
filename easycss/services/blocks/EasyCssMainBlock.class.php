@@ -66,31 +66,31 @@ class EasyCssMainBlock extends EasyCssAbstractBlock
             array_shift($path);
             array_shift($path);
             $path = implode('/', $path);
-            $modif = $this->setValueFromPost($path, $request);
+            $modif = $this->set_value_from_post($path, $request);
             if ($modif !== false)
             {
-                echo $this->getChildFullName($element) . ' est modifié ' . $modif . "<br/>";
+                echo $this->get_child_full_name($element) . ' est modifié ' . $modif . "<br/>";
             }
         }
     }
 
-    protected function getChildFullName($path)
+    protected function get_child_full_name($path)
     {
         $path = explode('/', $path);
 
         array_shift($path);
         array_shift($path);
         $path = implode('/', $path);
-        return $this->getChildName($path);
+        return $this->get_child_name($path);
     }
 
-    protected function getChildName($path_child)
+    protected function get_child_name($path_child)
     {
         $path = explode('/', $path_child);
         $child = $path[0];
         array_shift($path);
         $path = implode('/', $path);
-        return '/main/' . $this->children[$child]->GetChildName($path);
+        return '/main/' . $this->children[$child]->get_child_name($path);
     }
 
 }

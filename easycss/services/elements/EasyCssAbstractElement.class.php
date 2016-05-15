@@ -57,9 +57,23 @@ abstract class EasyCssAbstractElement
      * 
      * @return string Déclaration pour enregistrement dans le fichier CSS
      */
-    abstract public function getTextToFile();
+    abstract public function get_text_to_file();
     
-    public function getChildName()
+    /**
+     * @abstract
+     * Templates à afficher
+     * Retourne les templates des différents fields qui compose l'élément
+     * 
+     * @return \FileTemplate Template ou tableau de templates
+     */
+    abstract public function get_templates();
+    
+    /**
+     * Retourne le nom de la classe de l'élément
+     * 
+     * @return string   Nom de la classe de l'élément
+     */
+    public function get_child_name()
     {
         return get_called_class();
     }

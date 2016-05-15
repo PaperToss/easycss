@@ -31,15 +31,14 @@
  *
  * @author PaperToss
  */
-class EasyCssTransparencyField
+class EasyCssTransparencyField extends EasyCssAbstractField
 {
 
     protected $transparency;
-    protected $id;
 
     public function __construct($id, $transparency)
     {
-        $this->transparency = $transparency;
+        $this->setValue($transparency);
         $this->id = $id . __CLASS__;
     }
 
@@ -63,6 +62,9 @@ class EasyCssTransparencyField
     
     public function setValue($transparency)
     {
+        $transparency = trim($transparency);
+        if (substr($transparency,0,1) == '.' )
+                $transparency = '0' . $transparency;
         if ($this->transparency == $transparency)
         {
             return false;

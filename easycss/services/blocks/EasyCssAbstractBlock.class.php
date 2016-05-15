@@ -73,6 +73,7 @@ abstract class EasyCssAbstractBlock
                 $block = $this->children[$matches[1]];
                 if ($block->to_display)
                 {
+                    // Si le bloc doit être affiché
                     $templates = $block->get_templates();
                     foreach ($templates as $template)
                     {
@@ -84,6 +85,11 @@ abstract class EasyCssAbstractBlock
         return $tpls;
     }
     
+    /**
+     * Récupération du code CSS du bloc et ses enfants
+     * 
+     * @return string   Contenu CSS des éléments
+     */
     public function get_css_to_save()
     {
         $css = '';
@@ -96,53 +102,98 @@ abstract class EasyCssAbstractBlock
                 $block = $this->children[$matches[1]];
                 if (get_parent_class($block) === __CLASS__)
                 {
+                    // Enfant de type EasyCssAbstractBlock
                     $css.= $this->get_spaces() . '    ' . $block->get_css_to_save();
                 }
                 else
                 {
-                    $css.= $this->get_spaces() . '    ' .$block->getTextToFile() . "\n";
+                    // Enfant de type EasyCssAbstractElement
+                    $css.= $this->get_spaces() . '    ' .$block->get_text_to_file() . "\n";
                 }   
             }
         }
         return $css;
     }
     
-    protected function setValueFromPost($path_child, \HTTPRequestCustom $request)
+    /**
+     * Indique à l'enfant qu'il doit aller récupérer sa valeur depuis le POST
+     * 
+     * @param string                Chemin de l'enfant
+     * @param \HTTPRequestCustom    $request
+     * @return mixed                Nouvelle valeur si l'élément a été modifié, sinon false
+     */
+    protected function set_value_from_post($path_child, \HTTPRequestCustom $request)
     {
         $path = explode('/', $path_child);
         $child = $path[0];
         array_shift($path);
         $path = implode('/', $path);
-        return $this->children[$child]->setValueFromPost($path, $request);
+        return $this->children[$child]->set_value_from_post($path, $request);
     }
     
-    
+    /**
+     * Parse les éléments de type EasyCssTitleBlock
+     * 
+     * @param   string  Contenu CSS du bloc
+     * @return  string  Contenu CSS parsé
+     */
     protected function parse_title_block($css)
     {
         return preg_replace_callback('`\/\*\*\s*-{3}(.+)-{3}\s*\*\/`isU', array($this, 'replace_parse_title_block'), $css );
     }
     
+    /**
+     * Parse les éléments de type EasyCssDisplayCommentBlock
+     * 
+     * @param   string  Contenu CSS du bloc
+     * @return  string  Contenu CSS parsé
+     */
     protected function parse_display_comment_block($css)
     {
         return preg_replace_callback('`\/\*\*(.+)\*\/`isU', array($this, 'replace_parse_display_comment_block'), $css );
     }
     
+    /**
+     * Parse les éléments de type EasyCssCommentBlock
+     * 
+     * @param   string  Contenu CSS du bloc
+     * @return  string  Contenu CSS parsé
+     */
     protected function parse_comment_block($css)
     {
         return preg_replace_callback('`\/\*(.+)\*\/`isU', array($this, 'replace_parse_comment_block'), $css );
     }
     
+    /**
+     * Parse les éléments de type EasyCssMediaBlock
+     * 
+     * @param   string  Contenu CSS du bloc
+     * @return  string  Contenu CSS parsé
+     */
     protected function parse_media_block($css)
     {
         return preg_replace_callback('`@media\s*\((.+)\)\s*\{(.*)\}\s*\}`isU', array($this, 'replace_parse_media_block'), $css );
     }
     
+    /**
+     * Parse les éléments de type EasyCssBlock
+     * 
+     * @param   string  Contenu CSS du bloc
+     * @return  string  Contenu CSS parsé
+     */
     protected function parse_block($css)
     {
         return preg_replace_callback('`\s*([^#{3}|^\/]*)\{(.*)\}`isU', array($this, 'replace_parse_block'), $css );
     }
     
-    
+    /**
+     * Remplace le code CSS complet du bloc EasyCssTitleBlock
+     * Créé un nouvel objet EasyCssTitleBlock et le stocke dans le tableau $children du bloc parent
+     * Retourne la chaine de remplacement
+     * 
+     * @param   array   Elements de la recherche du preg_replace
+     * @return  string  Chaine de remplacement
+     */
     protected function replace_parse_title_block($matches)
     {
         $this->counter++;
@@ -151,6 +202,14 @@ abstract class EasyCssAbstractBlock
         return "\n" . '###' . $this->counter . '/###' . "\n";
     }
     
+    /**
+     * Remplace le code CSS complet du bloc EasyCssDisplayCommentBlock
+     * Créé un nouvel objet EasyCssDisplayCommentBlock et le stocke dans le tableau $children du bloc parent
+     * Retourne la chaine de remplacement
+     * 
+     * @param   array   Elements de la recherche du preg_replace
+     * @return  string  Chaine de remplacement
+     */
     protected function replace_parse_display_comment_block($matches)
     {
         $this->counter++;
@@ -159,6 +218,14 @@ abstract class EasyCssAbstractBlock
         return "\n" . '###' . $this->counter . '/###' . "\n";
     }
     
+    /**
+     * Remplace le code CSS complet du bloc EasyCssCommentBlock
+     * Créé un nouvel objet EasyCssCommentBlock et le stocke dans le tableau $children du bloc parent
+     * Retourne la chaine de remplacement
+     * 
+     * @param   array   Elements de la recherche du preg_replace
+     * @return  string  Chaine de remplacement
+     */
     protected function replace_parse_comment_block($matches)
     {
         $this->counter++;
@@ -167,6 +234,14 @@ abstract class EasyCssAbstractBlock
         return "\n" . '###' . $this->counter . '/###' . "\n";
     }
     
+    /**
+     * Remplace le code CSS complet du bloc EasyCssMediaBlock
+     * Créé un nouvel objet EasyCssMediaBlock et le stocke dans le tableau $children du bloc parent
+     * Retourne la chaine de remplacement
+     * 
+     * @param   array   Elements de la recherche du preg_replace
+     * @return  string  Chaine de remplacement
+     */
     protected function replace_parse_media_block($matches)
     {
         $this->counter++;
@@ -175,6 +250,14 @@ abstract class EasyCssAbstractBlock
         return "\n" . '###' . $this->counter . '/###' . "\n";
     }
     
+    /**
+     * Remplace le code CSS complet du bloc EasyCssBlock
+     * Créé un nouvel objet EasyCssBlock et le stocke dans le tableau $children du bloc parent
+     * Retourne la chaine de remplacement
+     * 
+     * @param   array   Elements de la recherche du preg_replace
+     * @return  string  Chaine de remplacement
+     */
     protected function replace_parse_block($matches)
     {
         if (!isset($matches[1])) return '';
@@ -184,6 +267,13 @@ abstract class EasyCssAbstractBlock
         return "\n" . '###' . $this->counter . '/###' . "\n";
     }
     
+    /**
+     * Créé l'indentation
+     * 
+     * Retourne un certain nombre d'espaces en fonction du parent du bloc
+     * 
+     * @return string   Chaine d'espaces
+     */
     protected function get_spaces()
     {
         if ($this->parent_id === '' || $this->parent_id === '/main') return '';

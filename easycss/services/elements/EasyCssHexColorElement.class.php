@@ -55,14 +55,14 @@ class EasyCssHexColorElement extends EasyCssAbstractElement
         return array($begin, $color_tpl, $end);
     }
 
-    public function getTextToFile()
+    public function get_text_to_file()
     {
         return 'color : #' . $this->color->getColor() . ';';
     }
 
-    public function setValueFromPost(\HTTPRequestCustom $request)
+    public function set_value_from_post(\HTTPRequestCustom $request)
     {
-        $color_value = $request->get_poststring($this->parent_id . '/' . $this->id, false);
+        $color_value = $request->get_poststring($this->parent_id . '/' . $this->id . get_class($this->color), false);
         return $this->color->setValue($color_value);
     }
 
