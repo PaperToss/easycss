@@ -30,7 +30,6 @@
  * Cette page permet la modification des fichiers CSS contenus dans le dossier 'theme' des thèmes installés
  *
  * @author PaperToss
- * @
  */
 class AdminEasyCssEditController extends ModuleController
 {
@@ -135,8 +134,11 @@ class AdminEasyCssEditController extends ModuleController
         {
             $tpls[] = array('SUBTEMPLATE' => $tpl);
         }
-        $this->view->put('elements', $tpls);
-        $this->view->put('ELEMENTS_FIELDS', self::$hidden_input_content);
+        $this->view->put_all([
+            'elements'          => $tpls,
+            'ELEMENTS_FIELDS'   => self::$hidden_input_content,
+            'FIELDSET_LEGEND'   => $this->lang['file_edit'] . $this->theme_id . ' / ' . $this->css_id,
+        ]);
     }
 
     /**

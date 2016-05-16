@@ -33,7 +33,7 @@ ul.tabs li.current{
     display: inline-block;
 }
 
-.easycss-field {
+.easycss-block {
     width: 100%;
     margin-bottom: 10px;
     padding:5px;
@@ -41,7 +41,25 @@ ul.tabs li.current{
     box-shadow: 0 0px 5px 0 rgba(0, 0, 0, 0.1);
 }
 
+.easycss-block > h6{
+    border-bottom:1px solid #ccc;
+    margin-bottom: 5px;
+}
 
+.easycss-field {
+    width: 100%;
+    border: 1px solid #ccc;
+    padding:5px;
+    margin-bottom: 10px;
+}
+
+.easycss-block-title {
+    margin-bottom: 5px;
+}
+
+.easycss-block-title + .easycss-block > h6 {
+    display: none;
+}
 
 /* Fields */
 input[type="text"], input[type="url"], input[type="number"], input[type="color"] {

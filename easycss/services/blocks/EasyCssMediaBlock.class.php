@@ -65,10 +65,16 @@ class EasyCssMediaBlock extends EasyCssAbstractBlock
         $tpls = parent::get_templates();
         if (!empty($tpls))
         {
-            array_unshift($tpls, new StringTemplate('<div class="easycss-field"><h6>' . $this->type .' : ' . $this->size . '</h6>'));
+            array_unshift($tpls, new StringTemplate('<div class="easycss-block"><h6>' . $this->get_title_block() . '</h6>'));
             array_push($tpls, new StringTemplate('</div>'));
         }
         return $tpls;
+    }
+    
+    private function get_title_block()
+    {
+        $title = LangLoader::get_message(trim($this->type), 'common', 'easycss');
+        return $title . ' : ' . $this->size;
     }
     
     public function get_child_name($path_child)

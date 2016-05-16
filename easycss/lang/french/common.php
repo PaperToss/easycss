@@ -33,8 +33,14 @@
 $lang['module_title'] = 'EasyCss';
 
 $lang['theme_choice'] = 'Choix du thème';
+$lang['file_edit'] = 'Edition du fichier ';
+$lang['edit_description'] = 'Modifiez les éléments ci-dessous puis validez en cliquant sur \'Envoyer\'';
 
 $lang['file_edit_success'] = 'Le fichier a bien été modifié';
 
+// Blocs
+$lang['min-width'] = 'Largeur minimale';
+$lang['max-width'] = 'Largeur maximale';
+// Champs
 $lang['color_description'] = 'Couleur';
 $lang['transparency_description'] = 'Opacité';

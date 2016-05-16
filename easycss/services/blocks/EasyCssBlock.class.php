@@ -77,7 +77,7 @@ class EasyCssBlock extends EasyCssAbstractBlock
         $tpls = parent::get_templates();
         if (!empty($tpls))
         {
-            array_unshift($tpls, new StringTemplate('<div class="easycss-field"><h6>' . $this->tag . '</h6>'));
+            array_unshift($tpls, new StringTemplate('<div class="easycss-block"><h6>' . $this->tag . '</h6>'));
             array_push($tpls, new StringTemplate('</div>'));
         }
         return $tpls;

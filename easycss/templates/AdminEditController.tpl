@@ -12,11 +12,10 @@
                 # INCLUDE MSG #
                         
 		<div id="admin-contents">
-                    {@module_title}
                     <fieldset>
-                        <legend>Fieldset</legend>
+                        <legend>{FIELDSET_LEGEND}</legend>
                         <div class="fieldset-inset">
-                            <p class="fieldset-description">Ceci est ma description</p>
+                            <p class="fieldset-description">{@edit_description}</p>
 
 
                             <form id="AdminEasyCssEditController" method="post" class="fieldset-content">

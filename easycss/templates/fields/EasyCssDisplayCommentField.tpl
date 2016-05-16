@@ -1,3 +1,3 @@
-<div class="easycss-field-comment">
+<div class="easycss-block-comment">
     <p>{VALUE}</p>
 </div>
