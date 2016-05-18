@@ -73,7 +73,7 @@ class EasyCssRGBAColorElement extends EasyCssAbstractElement
 
     public function get_text_to_file()
     {
-        return 'color : rgba(' . $this->color->get_rgb_color() . ',' . $this->transparency->get_transparency() .');';
+        return 'color : rgba(' . $this->color->get_color() . ',' . $this->transparency->get_transparency() .');';
     }
     
     public function set_value_from_post(\HTTPRequestCustom $request)
@@ -84,7 +84,7 @@ class EasyCssRGBAColorElement extends EasyCssAbstractElement
         $transp_modif = $this->transparency->set_value($transparency_value);
         if ($color_modif !== FALSE || $transp_modif !== FALSE)
         {
-            return $this->color->get_rgb_color() . ',' . $this->transparency->get_transparency();
+            return $this->color->get_color() . ',' . $this->transparency->get_transparency();
         }
         return false;
     }

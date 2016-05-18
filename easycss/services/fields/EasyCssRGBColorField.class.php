@@ -47,13 +47,8 @@ class EasyCssRGBColorField extends EasyCssAbstractField
         $this->HexColor = $r . $g . $b;
         $this->id = $id . __CLASS__;
     }
-    
-    public function get_hex_color()
-    {
-        return $this->HexColor;
-    }
 
-    public function get_rgb_color()
+    public function get_color()
     {
         return $this->RGBColor;
     }

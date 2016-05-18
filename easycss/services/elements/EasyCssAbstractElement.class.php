@@ -49,6 +49,7 @@ abstract class EasyCssAbstractElement
         'EasyCssRGBAColorElement',
         'EasyCssRGBColorElement',
         'EasyCssHexBackgroundColorElement',
+        'EasyCssBackgroundElement',
     ];
     
     /** @staticvar array Regex */

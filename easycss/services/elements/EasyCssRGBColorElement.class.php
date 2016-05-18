@@ -68,7 +68,7 @@ class EasyCssRGBColorElement extends EasyCssAbstractElement
 
     public function get_text_to_file()
     {
-        return 'color : rgb(' . $this->color->get_rgb_color() .');';
+        return 'color : rgb(' . $this->color->get_color() .');';
     }
     
     public function set_value_from_post(\HTTPRequestCustom $request)
@@ -77,7 +77,7 @@ class EasyCssRGBColorElement extends EasyCssAbstractElement
         $color_modif = $this->color->set_value($color_value);
         if ($color_modif !== FALSE)
         {
-            return $this->color->get_rgb_color();
+            return $this->color->get_color();
         }
         return false;
     }
