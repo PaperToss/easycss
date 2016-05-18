@@ -47,6 +47,7 @@ abstract class EasyCssAbstractElement
     public static $elements = [
         'EasyCssHexColorElement',
         'EasyCssRGBAColorElement',
+        'EasyCssRGBColorElement',
     ];
     
     /** @staticvar array Regex */
