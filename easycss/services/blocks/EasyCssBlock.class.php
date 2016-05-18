@@ -52,16 +52,23 @@ class EasyCssBlock extends EasyCssAbstractBlock
         $css = $this->parse_display_comment_block($css);
         $css = $this->parse_comment_block($css);
         
-        foreach (EasyCssAbstractElement::$elements as $name => $regex)
+        // Parsage des éléments gérés
+        foreach (EasyCssAbstractElement::$elements as $name)
         {
-            $css = preg_replace_callback($regex, function ($matches) use($name) 
+            /* @var \EasyCssAbstractElement $name */
+            foreach ($name::$regex as $regex)
             {
-                $this->counter++;
-                $this->children[$this->counter] = new $name($this->counter, $this->parent_id .'/' . $this->id  ,  $matches[1]);
-                return "\n" . '###' . $this->counter . '/###' . "\n";
-            }, $css);
+                $css = preg_replace_callback($regex, function ($matches) use($name) 
+                {
+                    $this->counter++;
+                    $this->children[$this->counter] = new $name($this->counter, $this->parent_id .'/' . $this->id  ,  $matches[1]);
+                    return "\n" . '###' . $this->counter . '/###' . "\n";
+                }, $css);
+            }
+            
         }
         
+        // Parsage des éléments génériques
         $css = preg_replace_callback('`([^#{3}|^\/| ]*)\s*:\s*(.*)\s*;`isU', function ($matches)
         {
             $this->counter++;

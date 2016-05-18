@@ -48,7 +48,7 @@ class EasyCssTitleBlock extends EasyCssAbstractBlock
 
     public function get_templates()
     {
-        $title_tpl = $this->title->getForm(false);
+        $title_tpl = $this->title->get_form(false);
         return array($title_tpl);
     }
     
@@ -56,9 +56,9 @@ class EasyCssTitleBlock extends EasyCssAbstractBlock
     {
         if ($this->parent_id === '' || $this->parent_id === '/main')
         {
-            return "\n" . '/** ---' . $this->title->getTitle() . '--- */' . "\n"; 
+            return "\n" . '/** ---' . $this->title->get_title() . '--- */' . "\n"; 
         }
-        return '/** ---' . $this->title->getTitle() . '--- */' . "\n"; 
+        return '/** ---' . $this->title->get_title() . '--- */' . "\n"; 
         
     }
 }

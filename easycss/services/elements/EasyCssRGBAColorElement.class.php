@@ -45,7 +45,10 @@ class EasyCssRGBAColorElement extends EasyCssAbstractElement
     
     public $to_display = true;    
 
-    
+    /** @staticvar array Regex */
+    public static $regex = [
+        '`(?<=[^-])color\s*:\s*rgba\s*\(\s*(.+)\s*\)\s*;`isU',
+    ];
     
     public function __construct($id, $parent_id, $value)
     {
@@ -60,8 +63,8 @@ class EasyCssRGBAColorElement extends EasyCssAbstractElement
 
     public function get_templates()
     {
-        $color_tpl = $this->color->getForm(LangLoader::get_message('color_description', 'common', 'easycss'));
-        $transp_tpl = $this->transparency->getForm(LangLoader::get_message('transparency_description', 'common', 'easycss'));
+        $color_tpl = $this->color->get_form(LangLoader::get_message('color_description', 'common', 'easycss'));
+        $transp_tpl = $this->transparency->get_form(LangLoader::get_message('transparency_description', 'common', 'easycss'));
         $begin = new StringTemplate('<div class="easycss-field">');
         $end = new StringTemplate('</div>');
         AdminEasyCssEditController::add_field_to_hidden_input($this->parent_id . '/' . $this->id);
@@ -70,18 +73,18 @@ class EasyCssRGBAColorElement extends EasyCssAbstractElement
 
     public function get_text_to_file()
     {
-        return 'color : rgba(' . $this->color->getRGBColor() . ',' . $this->transparency->getTransparency() .');';
+        return 'color : rgba(' . $this->color->get_rgb_color() . ',' . $this->transparency->get_transparency() .');';
     }
     
     public function set_value_from_post(\HTTPRequestCustom $request)
     {
         $color_value = $request->get_poststring($this->parent_id . '/' . $this->id . get_class($this->color), false);
         $transparency_value = $request->get_poststring($this->parent_id . '/' . $this->id . get_class($this->transparency), false);
-        $color_modif = $this->color->setValue($color_value);
-        $transp_modif = $this->transparency->setValue($transparency_value);
+        $color_modif = $this->color->set_value($color_value);
+        $transp_modif = $this->transparency->set_value($transparency_value);
         if ($color_modif !== FALSE || $transp_modif !== FALSE)
         {
-            return $this->color->getRGBColor() . ',' . $this->transparency->getTransparency();
+            return $this->color->get_rgb_color() . ',' . $this->transparency->get_transparency();
         }
         return false;
     }

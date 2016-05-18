@@ -41,5 +41,5 @@ abstract class EasyCssAbstractField
      * 
      * @param   string   Label à afficher
      */
-    abstract public function getForm($label);
+    abstract public function get_form($label);
 }

@@ -42,12 +42,12 @@ class EasyCssDisplayCommentField extends EasyCssAbstractField
         $this->id = $id;
     }
 
-    public function getTitle()
+    public function get_title()
     {
         return $this->title;
     }
 
-    public function getForm($label)
+    public function get_form($label)
     {
         $tpl = new FileTemplate('easycss/fields/EasyCssDisplayCommentField.tpl');
         $tpl->put_all(array(

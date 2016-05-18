@@ -38,6 +38,11 @@ class EasyCssHexColorElement extends EasyCssAbstractElement
 
     /** @var \EasyCssHexColorField */
     protected $color;
+    
+    /** @staticvar array Regex */
+    public static $regex = [
+        '`(?<=[^-])color\s*:\s*#([a-f0-9]{3,6})\s*;`isU',
+    ];
 
     public function __construct($id, $parent_id, $value)
     {
@@ -48,7 +53,7 @@ class EasyCssHexColorElement extends EasyCssAbstractElement
 
     public function get_templates()
     {
-        $color_tpl = $this->color->getForm(LangLoader::get_message('color_description', 'common', 'easycss'));
+        $color_tpl = $this->color->get_form(LangLoader::get_message('color_description', 'common', 'easycss'));
         $begin = new StringTemplate('<div class="easycss-field">');
         $end = new StringTemplate('</div>');
         AdminEasyCssEditController::add_field_to_hidden_input($this->parent_id . '/' . $this->id);
@@ -57,13 +62,13 @@ class EasyCssHexColorElement extends EasyCssAbstractElement
 
     public function get_text_to_file()
     {
-        return 'color : #' . $this->color->getColor() . ';';
+        return 'color : #' . $this->color->get_color() . ';';
     }
 
     public function set_value_from_post(\HTTPRequestCustom $request)
     {
         $color_value = $request->get_poststring($this->parent_id . '/' . $this->id . get_class($this->color), false);
-        return $this->color->setValue($color_value);
+        return $this->color->set_value($color_value);
     }
 
 }

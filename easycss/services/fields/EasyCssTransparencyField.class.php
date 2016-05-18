@@ -38,16 +38,16 @@ class EasyCssTransparencyField extends EasyCssAbstractField
 
     public function __construct($id, $transparency)
     {
-        $this->setValue($transparency);
+        $this->set_value($transparency);
         $this->id = $id . __CLASS__;
     }
 
-    public function getTransparency()
+    public function get_transparency()
     {
         return $this->transparency;
     }
 
-    public function getForm($label)
+    public function get_form($label)
     {
         $tpl = new FileTemplate('easycss/fields/EasyCssTransparencyField.tpl');
         $tpl->put_all(array(
@@ -60,7 +60,7 @@ class EasyCssTransparencyField extends EasyCssAbstractField
         return $tpl;
     }
     
-    public function setValue($transparency)
+    public function set_value($transparency)
     {
         $transparency = trim($transparency);
         if (substr($transparency,0,1) == '.' )

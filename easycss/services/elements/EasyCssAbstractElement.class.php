@@ -44,11 +44,13 @@ abstract class EasyCssAbstractElement
     protected $parent_id;
     
     /** @var \EasyCssAbstractElement array  Eléments à parser*/
-    public static $elements = array(
-        'EasyCssHexColorElement' => '`(?<=[^-])color\s*:\s*#([a-f0-9]{3,6})\s*;`isU',
-        'EasyCssRGBAColorElement' => '`(?<=[^-])color\s*:\s*rgba\s*\(\s*(.+)\s*\)\s*;`isU',
-    );
+    public static $elements = [
+        'EasyCssHexColorElement',
+        'EasyCssRGBAColorElement',
+    ];
     
+    /** @staticvar array Regex */
+    public static $regex = [];
     
     /**
      * @abstract

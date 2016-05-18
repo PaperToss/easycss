@@ -37,16 +37,16 @@ class EasyCssHexColorField extends EasyCssAbstractField
     
     public function __construct($id, $color)
     {
-        $this->setValue($color);
+        $this->set_value($color);
         $this->id = $id . __CLASS__;
     }
     
-    public function getColor()
+    public function get_color()
     {
         return $this->color;
     }
 
-    public function getForm($label)
+    public function get_form($label)
     {
         $tpl = new FileTemplate('easycss/fields/EasyCssColorField.tpl');
         $tpl->put_all(array(
@@ -59,7 +59,7 @@ class EasyCssHexColorField extends EasyCssAbstractField
         return $tpl;
     }
     
-    public function setValue($color)
+    public function set_value($color)
     {
         $color=trim($color);
         if (substr($color,0,1) == '#' )
