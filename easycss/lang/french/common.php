@@ -42,5 +42,6 @@ $lang['file_edit_success'] = 'Le fichier a bien été modifié';
 $lang['min-width'] = 'Largeur minimale';
 $lang['max-width'] = 'Largeur maximale';
 // Champs
+$lang['background_color_description'] = 'Couleur de fond';
 $lang['color_description'] = 'Couleur';
 $lang['transparency_description'] = 'Opacité';
