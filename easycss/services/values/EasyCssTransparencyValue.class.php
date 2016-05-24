@@ -1,9 +1,9 @@
 <?php
 
 /* #################################################
- *                           EasyCssTransparencyField.class.php
+ *                           EasyCssTransparencyValue.class.php
  *                            -------------------
- *   begin                : 2016/04/29
+ *   begin                : 2016/05/20
  *   copyright            : (C) 2016 Toss
  *   email                : t0ssp4p3r@gmail.com
  *
@@ -27,37 +27,18 @@
   ################################################### */
 
 /**
- * Description of EasyCssTransparencyField
+ * Description of EasyCssTransparencyValue
  *
  * @author PaperToss
  */
-class EasyCssTransparencyField extends EasyCssAbstractField
+class EasyCssTransparencyValue extends EasyCssAbstractValue
 {
-
     protected $transparency;
-
+    
     public function __construct($id, $transparency)
     {
+        parent::__construct($id);
         $this->set_value($transparency);
-        $this->id = $id . __CLASS__;
-    }
-
-    public function get_transparency()
-    {
-        return $this->transparency;
-    }
-
-    public function get_form($label)
-    {
-        $tpl = new FileTemplate('easycss/fields/EasyCssTransparencyField.tpl');
-        $tpl->put_all(array(
-            'NAME' => $this->id,
-            'ID' => $this->id,
-            'HTML_ID' => $this->id,
-            'VALUE' => $this->transparency,
-            'LABEL' => $label
-        ));
-        return $tpl;
     }
     
     public function set_value($transparency)
@@ -72,5 +53,22 @@ class EasyCssTransparencyField extends EasyCssAbstractField
         $this->transparency = $transparency;
         return $this->transparency;
     }
-
+    
+    public function get_form($label)
+    {
+        $tpl = new FileTemplate('easycss/fields/EasyCssTransparencyField.tpl');
+        $tpl->put_all(array(
+            'NAME' => $this->id,
+            'ID' => $this->id,
+            'HTML_ID' => $this->id,
+            'VALUE' => $this->transparency,
+            'LABEL' => $label
+        ));
+        return $tpl;
+    }
+    
+    public function get_transparency()
+    {
+        return $this->transparency;
+    }
 }

@@ -1,9 +1,9 @@
 <?php
 
 /* #################################################
- *                           EasyCssTitleField.class.php
+ *                           EasyCssAbstractValue.class.php
  *                            -------------------
- *   begin                : 2016/04/29
+ *   begin                : 2016/05/22
  *   copyright            : (C) 2016 Toss
  *   email                : t0ssp4p3r@gmail.com
  *
@@ -27,33 +27,18 @@
   ################################################### */
 
 /**
- * Description of EasyCssTitleField
+ * Description of EasyCssAbstractValue
  *
- * @author Toss
+ * @author PaperToss
  */
-class EasyCssDisplayCommentField extends EasyCssAbstractField
+abstract class EasyCssAbstractValue
 {
-
-    protected $title;
-
-    public function __construct($id, $title)
+    protected $id;
+    
+    protected function __construct($id)
     {
-        $this->title = $title;
         $this->id = $id;
     }
-
-    public function get_title()
-    {
-        return $this->title;
-    }
-
-    public function get_form($label)
-    {
-        $tpl = new FileTemplate('easycss/fields/EasyCssDisplayCommentField.tpl');
-        $tpl->put_all(array(
-            'VALUE' => $this->title,
-        ));
-        return $tpl;
-    }
-
+    
+    abstract public function get_form($label);
 }

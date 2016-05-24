@@ -57,6 +57,8 @@ class AdminEasyCssEditController extends ModuleController
 
     /** @staticvar string   Contenu du champ hidden (ID des éléments à modifier) */
     private static $hidden_input_content = '';
+    
+    private static $errors = [];
 
     /** @var \EasyCssMainBlock  Bloc Principal du CSS */
     private $main_block;
@@ -134,7 +136,13 @@ class AdminEasyCssEditController extends ModuleController
         {
             $tpls[] = array('SUBTEMPLATE' => $tpl);
         }
+        $error_tpls = [];
+        foreach (self::$errors as $error_tpl)
+        {
+            $error_tpls[] = array('SUBTEMPLATE' => $error_tpl);
+        }
         $this->view->put_all([
+            'errors'          => $error_tpls,
             'elements'          => $tpls,
             'ELEMENTS_FIELDS'   => self::$hidden_input_content,
             'FIELDSET_LEGEND'   => $this->lang['file_edit'] . $this->theme_id . ' / ' . $this->css_id,
@@ -200,6 +208,17 @@ class AdminEasyCssEditController extends ModuleController
     public static function add_field_to_hidden_input($id)
     {
         self::$hidden_input_content .= $id . ';';
+    }
+    
+    /**
+     * Ajoute une erreur de contenu
+     * 
+     * @static
+     * @param string    Erreur à afficher
+     */
+    public static function add_error(\Template $tpl)
+    {
+        self::$errors[] = $tpl;
     }
 
 }

@@ -1,9 +1,9 @@
 <?php
 
 /* #################################################
- *                           EasyCssAbstractField.class.php
+ *                           EasyCssGenericAttribut.class.php
  *                            -------------------
- *   begin                : 2016/05/15
+ *   begin                : 2016/05/04
  *   copyright            : (C) 2016 Toss
  *   email                : t0ssp4p3r@gmail.com
  *
@@ -27,19 +27,35 @@
   ################################################### */
 
 /**
- * Description of EasyCssAbstractField
+ * Description of EasyCssGenericAttribut
  *
  * @author Toss
  */
-abstract class EasyCssAbstractField
+class EasyCssGenericAttribut extends EasyCssAbstractAttribut
 {
-    /** @var    string  ID du champ */
-    protected $id;
+    public $id;
+    public $attribut;
     
-    /**
-     * Récupération du template du champ
-     * 
-     * @param   string   Label à afficher
-     */
-    abstract public function get_form($label);
+    public $value;
+    
+    public $to_display = false;
+    
+    public function __construct($id, $parent_id, $attribut, $value)
+    {
+        $this->id = $id;
+        $this->attribut = trim($attribut);
+        $this->value = trim($value);
+        $this->parent_id = $parent_id;
+    }
+    
+    public function get_text_to_file()
+    {
+        return $this->attribut . ' : ' . $this->value . ';';
+    }
+    
+    public function get_templates()
+    {
+        return;
+    }
+    
 }

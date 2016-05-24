@@ -1,9 +1,9 @@
 <?php
 
 /* #################################################
- *                           EasyCssRGBColorField.class.php
+ *                           EasyCsRGBColorValue.class.php
  *                            -------------------
- *   begin                : 2016/04/29
+ *   begin                : 2016/05/19
  *   copyright            : (C) 2016 Toss
  *   email                : t0ssp4p3r@gmail.com
  *
@@ -27,60 +27,61 @@
   ################################################### */
 
 /**
- * Description of EasyCssRGBColorField
+ * Description of EasyCssRGBColorValue
  *
- * @author Toss
+ * @author PaperToss
  */
-class EasyCssRGBColorField extends EasyCssAbstractField
+class EasyCssRGBColorValue extends EasyCssAbstractValue
 {
-    protected $HexColor;
+    protected $rgb_color;
     
-    protected $RGBColor;
+    protected $hex_color;
     
     public function __construct($id, $rgbcolor)
     {
+        parent::__construct($id);
+        
         $values = explode(',', $rgbcolor);
-        $this->RGBColor = $values[0] . ',' . $values[1] . ',' . $values[2];
+        $this->rgb_color = $values[0] . ',' . $values[1] . ',' . $values[2];
         $r = self::rgb_to_hex($values[0]);
         $g = self::rgb_to_hex($values[1]);
         $b = self::rgb_to_hex($values[2]);
-        $this->HexColor = $r . $g . $b;
-        $this->id = $id . __CLASS__;
+        $this->hex_color = $r . $g . $b;
     }
-
-    public function get_color()
-    {
-        return $this->RGBColor;
-    }
-
+    
     public function get_form($label)
     {
         $tpl = new FileTemplate('easycss/fields/EasyCssColorField.tpl');
         $tpl->put_all(array(
             'NAME' =>$this->id,
             'ID' => $this->id,
-            'HTML_ID' => $this->id,
-            'VALUE' => '#' . $this->HexColor,
+            'VALUE' => '#' . $this->hex_color,
             'LABEL' => $label,
         ));
         return $tpl;
     }
+    
+    public function get_color()
+    {
+        return $this->rgb_color;
+    }
+
 
     public function set_value($hexcolor)
     {
         $rgbcolor = self::hex_to_rgb($hexcolor);
-        if ($this->RGBColor == $rgbcolor)
+        if ($this->rgb_color == $rgbcolor)
         {
             return false;
         }
-        $this->RGBColor = $rgbcolor;
+        $this->rgb_color = $rgbcolor;
         if (substr($hexcolor,0,1) == '#' )
                 $hexcolor = substr($hexcolor,1);
-        $this->HexColor = $hexcolor;
-        return $this->RGBColor;
+        $this->hex_color = $hexcolor;
+        return $this->rgb_color;
     }
     
-    public static function rgb_to_hex($n)
+    protected static function rgb_to_hex($n)
     {
         $n = intval($n);
         if (!$n)
@@ -94,7 +95,7 @@ class EasyCssRGBColorField extends EasyCssAbstractField
                 . substr("0123456789ABCDEF", $index2, 1);
     }
 
-    public static function hex_to_rgb($hex)
+    protected static function hex_to_rgb($hex)
     {
         $hex = str_replace("#", "", $hex);
 

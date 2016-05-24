@@ -14,6 +14,12 @@
 		<div id="admin-contents">
                     <fieldset>
                         <legend>{FIELDSET_LEGEND}</legend>
+                        # START errors #  
+                        <div class="error">
+                            # INCLUDE errors.SUBTEMPLATE # 
+                        </div>
+                        # END #
+                        
                         <div class="fieldset-inset">
                             <p class="fieldset-description">{@edit_description}</p>
 

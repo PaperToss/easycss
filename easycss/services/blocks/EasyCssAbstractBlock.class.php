@@ -54,6 +54,9 @@ abstract class EasyCssAbstractBlock
     /** @var boolean        Si le contenu du bloc doit être affiché lors de l'édition */
     public $to_display;
     
+    public $on_error = false;
+
+
     /**
      * Récupération des templates des blocs enfants
      * 
@@ -71,10 +74,12 @@ abstract class EasyCssAbstractBlock
                 
                 /* @var $block \EasyCssAbstractBlock */       
                 $block = $this->children[$matches[1]];
-                if ($block->to_display)
+                if ($block->to_display && $block->on_error === false)
                 {
                     // Si le bloc doit être affiché
                     $templates = $block->get_templates();
+                    if (!is_array($templates))
+                        $templates = [$templates];
                     foreach ($templates as $template)
                     {
                         $tpls[] = $template;
