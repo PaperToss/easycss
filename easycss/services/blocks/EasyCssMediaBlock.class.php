@@ -85,6 +85,17 @@ class EasyCssMediaBlock extends EasyCssAbstractBlock
         $path = implode('/', $path);
         return __CLASS__ . ':' . $this->type . ':' . $this->size . '/' . $this->children[$child]->get_child_name($path);
     }
+    
+    public function find_id($id)
+    {
+        $path = explode('/', $id);
+
+        $child = $path[0];
+        array_shift($path);
+        
+        $path = implode('/', $path);
+        return $this->children[$child]->find_id($path);
+    }
 
     public function get_css_to_save()
     {

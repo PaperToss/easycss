@@ -284,4 +284,5 @@ abstract class EasyCssAbstractBlock
         if ($this->parent_id === '' || $this->parent_id === '/main') return '';
         return '    ';
     }
+    
 }

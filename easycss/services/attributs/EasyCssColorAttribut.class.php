@@ -34,6 +34,8 @@
 class EasyCssColorAttribut extends EasyCssAbstractAttribut
 {
 
+    protected $name_attribut = 'Color';
+    
     public $to_display = true;
     
     protected $separator = false;
@@ -48,7 +50,7 @@ class EasyCssColorAttribut extends EasyCssAbstractAttribut
         parent::__construct($id, $parent_id, $value);
         if (!EasyCssColorsManager::is_color($this->values[0]))
         {
-            $this->add_error('color', 'Wrong arguments : ' . $this->values[0]);
+            $this->add_error('Wrong arguments : ' . $this->values[0]);
         } else
         {
             foreach ($this->values as $key => &$val)
@@ -60,7 +62,7 @@ class EasyCssColorAttribut extends EasyCssAbstractAttribut
 
     public function get_text_to_file()
     {
-        return 'color : ' . $this->values[0]->get_text_to_file() . ';';
+        return 'color : ' . $this->values[0]->get_text_to_file() . $this->is_important . ';';
     }
 
     public function get_templates($label = false)
@@ -80,6 +82,7 @@ class EasyCssColorAttribut extends EasyCssAbstractAttribut
 
     public function set_value_from_post(\HTTPRequestCustom $request)
     {
+        parent::set_value_from_post($request);
         $modif = false;
         foreach ($this->values as $key => &$val)
         {

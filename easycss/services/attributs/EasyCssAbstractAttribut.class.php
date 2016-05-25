@@ -39,12 +39,13 @@ abstract class EasyCssAbstractAttribut
     
     protected $raw_value;
     
-    
     protected $values = [];
 
     protected $is_important = false;
     
     public $on_error = false;
+    
+    protected $name_attribut = '';
     
     protected $begin_block = '<div class="easycss-field">';
     
@@ -73,9 +74,9 @@ abstract class EasyCssAbstractAttribut
         $this->explode_elements();
     }
     
-    protected function add_error($attribut, $msg)
+    public function add_error($msg)
     {
-        $tpl = new StringTemplate('<div>' . $attribut . ' : ' . $msg . '</div>');
+        $tpl = new StringTemplate('<div>' . $this->name_attribut . ' : ' . $msg . '</div>');
         AdminEasyCssEditController::add_error($tpl);
         $this->on_error = true;
     }
@@ -88,7 +89,14 @@ abstract class EasyCssAbstractAttribut
      */
     public function get_templates($tpl, $label = false)
     {
-        
+        $imp_tpl = new FileTemplate('easycss/fields/EasyCssImportantField.tpl');
+        $imp_tpl->put_all(array(
+            'NAME' => $this->parent_id .'/' . $this->id . '_important',
+            'ID' => $this->parent_id .'/' . $this->id . '_important',
+            'HTML_ID' => $this->parent_id .'/' . $this->id . '_important',
+            'CHECKED' => ($this->is_important !== false) ? 'checked="checked"' : '',
+            'LABEL' => 'Important'
+        ));
         if (!is_array($tpl))
             $tpls[] = $tpl;
         else
@@ -101,11 +109,22 @@ abstract class EasyCssAbstractAttribut
             $label_tpl = new StringTemplate('<h6>' . $label . '</h6>');
             array_unshift($tpls, $label_tpl);
         }
+        array_push($tpls, $imp_tpl);
         array_unshift($tpls, $begin_tpl);
         array_push($tpls, $end_tpl);
         return $tpls;
     }
     
+    protected function set_value_from_post(\HTTPRequestCustom $request)
+    {
+        $imp = $request->get_poststring($this->parent_id .'/' . $this->id . '_important', false);
+        if ($imp !== false)
+            $this->is_important = ' !important';
+        else
+            $this->is_important = false;
+    }
+
+
     /**
      * @abstract
      * Texte de retour
@@ -132,7 +151,7 @@ abstract class EasyCssAbstractAttribut
         if ($pos !== false)
         {
             $this->raw_value = str_replace('!important', '', $this->raw_value);
-            $this->is_important = true;
+            $this->is_important = ' !important';
         }
     }
     
@@ -145,4 +164,5 @@ abstract class EasyCssAbstractAttribut
         }
         $this->values = explode($this->separator, trim($this->raw_value));
     }
+    
 }

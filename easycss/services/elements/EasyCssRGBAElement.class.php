@@ -54,10 +54,9 @@ class EasyCssRGBAElement
         $this->color_id = $this->parent_id . '/' . $this->id . '_color';
         $this->transparency_id = $this->parent_id . '/' . $this->id . '_transparency';
         preg_match('`\s*rgba\s*\((.*)\)\s*`i', $value, $matches);
-        if (!isset($matches[1]))
-            return false;
         
         $values = explode(',', $matches[1]);
+
         $rgbcolor = $values[0] . ',' . $values[1] . ',' . $values[2];
         $this->color = new EasyCssRGBColorValue($this->color_id, $rgbcolor);
         $this->transparency = new EasyCssTransparencyValue($this->transparency_id, $values[3]);
@@ -76,7 +75,7 @@ class EasyCssRGBAElement
         $color_modif = $this->color->set_value($color_value);
         $transparency_value = $request->get_poststring($this->transparency_id, false);
         $transp_modif = $this->transparency->set_value($transparency_value);
-
+        
         if ($color_modif || $transp_modif)
             return $this->get_text_to_file ();
         return false;

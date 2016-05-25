@@ -43,9 +43,9 @@ class EasyCssTransparencyValue extends EasyCssAbstractValue
     
     public function set_value($transparency)
     {
-        $transparency = trim($transparency);
-        if (substr($transparency,0,1) == '.' )
-                $transparency = '0' . $transparency;
+        $transparency = floatval($transparency);
+        if ($transparency < 0 || $transparency > 1)
+            $transparency = 1;
         if ($this->transparency == $transparency)
         {
             return false;

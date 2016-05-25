@@ -204,7 +204,6 @@ class EasyCssColorsManager
     
     protected static function is_rgba_color($value)
     {
-        var_dump(preg_match('`\s*rgba\s*\((.*)\)\s*`i', $value));
-        return preg_match('`\s*rgba\s*\((.*)\)\s*`i', $value);
+        return preg_match('`\s*rgba\s*\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d?\.?\d\s*\)`i', $value);
     }
 }

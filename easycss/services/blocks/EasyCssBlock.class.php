@@ -107,6 +107,16 @@ class EasyCssBlock extends EasyCssAbstractBlock
         return __CLASS__ . ':' . $this->tag . '/' . $this->children[$child]->get_child_name();
     }
     
+    public function find_id($id)
+    {
+        $path = explode('/', $id);
+
+        $child = $path[0];
+        array_shift($path);
+        $path = implode('/', $path);
+        return $this->children[$child];
+    }
+    
     public function get_css_to_save()
     {        
         $css = parent::get_css_to_save();
@@ -114,6 +124,7 @@ class EasyCssBlock extends EasyCssAbstractBlock
         $css = $css . $this->get_spaces() . "}\n";
         return $css;
     }
+    
     
 
     

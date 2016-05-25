@@ -61,7 +61,7 @@ class AdminEasyCssEditController extends ModuleController
     private static $errors = [];
 
     /** @var \EasyCssMainBlock  Bloc Principal du CSS */
-    private $main_block;
+    private static $main_block;
 
     /**
      * Exécution de la page
@@ -123,7 +123,7 @@ class AdminEasyCssEditController extends ModuleController
     private function create_objects_elements()
     {
         $css = $this->file->read();
-        $this->main_block = new EasyCssMainBlock($css);
+        self::$main_block = new EasyCssMainBlock($css);
     }
 
     /**
@@ -131,7 +131,7 @@ class AdminEasyCssEditController extends ModuleController
      */
     private function put_templates()
     {
-        $forms_tpl = $this->main_block->get_templates();
+        $forms_tpl = self::$main_block->get_templates();
         foreach ($forms_tpl as $tpl)
         {
             $tpls[] = array('SUBTEMPLATE' => $tpl);
@@ -159,7 +159,7 @@ class AdminEasyCssEditController extends ModuleController
     private function post_process(\HTTPRequestCustom $request)
     {
         $post_elements = $request->get_poststring(__CLASS__ . '_elements_fields', false);
-        $this->main_block->replace_with_post($post_elements, $request);
+        self::$main_block->replace_with_post($post_elements, $request);
         $this->write_to_file();
         $this->clear_css_cache();
         $this->view->put('MSG', MessageHelper::display($this->lang['file_edit_success'], MessageHelper::SUCCESS, 5));
@@ -183,7 +183,7 @@ class AdminEasyCssEditController extends ModuleController
      */
     private function write_to_file()
     {
-        $this->file->write(trim($this->main_block->get_css_to_save()));
+        $this->file->write(trim(self::$main_block->get_css_to_save()));
         $this->clear_css_cache();
     }
 
@@ -221,4 +221,13 @@ class AdminEasyCssEditController extends ModuleController
         self::$errors[] = $tpl;
     }
 
+    /**
+     * 
+     * @param type $id
+     * @return \EasyCssAbstractAttribut
+     */
+    public static function get_element($id)
+    {
+        return self::$main_block->find_id($id);
+    }
 }
