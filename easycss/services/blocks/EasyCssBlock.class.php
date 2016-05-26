@@ -27,14 +27,14 @@
   ################################################### */
 
 /**
- * Description of EasyCssBlockElement
+ * Bloc de type standard (#id { color : ... } )
  *
  * @author PaperToss
  */
 class EasyCssBlock extends EasyCssAbstractBlock
 {
+
     protected $tag;
-    
     public $to_display = true;
 
     public function __construct($id, $parent_id, $tag, $css_content)
@@ -45,40 +45,39 @@ class EasyCssBlock extends EasyCssAbstractBlock
         $this->tag = $tag;
         $this->parse_elements_content();
     }
-    
+
     protected function parse_elements_content()
     {
         $css = $this->parse_title_block($this->css_content);
         $css = $this->parse_display_comment_block($css);
         $css = $this->parse_comment_block($css);
-        
+
         // Parsage des éléments gérés
         foreach (EasyCssAbstractAttribut::$attributs as $name)
         {
             /* @var \EasyCssAbstractAttribut $name */
             foreach ($name::$regex as $regex)
             {
-                $css = preg_replace_callback($regex, function ($matches) use($name) 
+                $css = preg_replace_callback($regex, function ($matches) use($name)
                 {
                     $this->counter++;
-                    $this->children[$this->counter] = new $name($this->counter, $this->parent_id .'/' . $this->id  ,  $matches[1]);
+                    $this->children[$this->counter] = new $name($this->counter, $this->parent_id . '/' . $this->id, $matches[1]);
                     return "\n" . '###' . $this->counter . '/###' . "\n";
                 }, $css);
             }
-            
         }
-        
+
         // Parsage des éléments génériques
         $css = preg_replace_callback('`([^#{3}|^\/| ]*)\s*:\s*(.*)\s*;`isU', function ($matches)
         {
             $this->counter++;
-            $this->children[$this->counter] = new EasyCssGenericAttribut($this->counter, $this->parent_id .'/' . $this->id,  $matches[1], $matches[2]);
+            $this->children[$this->counter] = new EasyCssGenericAttribut($this->counter, $this->parent_id . '/' . $this->id, $matches[1], $matches[2]);
             return "\n" . '###' . $this->counter . '/###' . "\n";
         }, $css);
 
         $this->parsed_css = $css;
     }
-    
+
     public function get_templates()
     {
         $tpls = parent::get_templates();
@@ -89,7 +88,7 @@ class EasyCssBlock extends EasyCssAbstractBlock
         }
         return $tpls;
     }
-    
+
     protected function set_value_from_post($path_child, \HTTPRequestCustom $request)
     {
         $path = explode('/', $path_child);
@@ -97,7 +96,7 @@ class EasyCssBlock extends EasyCssAbstractBlock
         array_shift($path);
         return $this->children[$child]->set_value_from_post($request);
     }
-    
+
     public function get_child_name($path_child)
     {
         $path = explode('/', $path_child);
@@ -106,7 +105,7 @@ class EasyCssBlock extends EasyCssAbstractBlock
         $path = implode('/', $path);
         return __CLASS__ . ':' . $this->tag . '/' . $this->children[$child]->get_child_name();
     }
-    
+
     public function find_id($id)
     {
         $path = explode('/', $id);
@@ -116,17 +115,13 @@ class EasyCssBlock extends EasyCssAbstractBlock
         $path = implode('/', $path);
         return $this->children[$child];
     }
-    
+
     public function get_css_to_save()
-    {        
+    {
         $css = parent::get_css_to_save();
-        $css = "\n" . $this->get_spaces(). $this->tag . " {\n" . $css;
+        $css = "\n" . $this->get_spaces() . $this->tag . " {\n" . $css;
         $css = $css . $this->get_spaces() . "}\n";
         return $css;
     }
-    
-    
 
-    
-    
 }

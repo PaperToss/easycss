@@ -3,7 +3,7 @@
 /* #################################################
  *                           EasyCssTitleBlock.class.php
  *                            -------------------
- *   begin                : 2016/00/04
+ *   begin                : 2016/05/04
  *   copyright            : (C) 2016 Toss
  *   email                : t0ssp4p3r@gmail.com
  *
@@ -27,9 +27,9 @@
   ################################################### */
 
 /**
- * Description of EasyCssTitleBlock
+ * Commentaire affiché ( /** commentaire * / )
  *
- * @author Toss
+ * @author PaperToss
  */
 class EasyCssDisplayCommentBlock extends EasyCssAbstractBlock
 {

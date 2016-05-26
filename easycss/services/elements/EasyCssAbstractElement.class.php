@@ -1,9 +1,9 @@
 <?php
 
 /* #################################################
- *                           EasyCssCommentBlock.class.php
+ *                           EasyCssAbstractElement.class.php
  *                            -------------------
- *   begin                : 2016/05/04
+ *   begin                : 2016/05/26
  *   copyright            : (C) 2016 Toss
  *   email                : t0ssp4p3r@gmail.com
  *
@@ -27,31 +27,20 @@
   ################################################### */
 
 /**
- * Bloc de commentaire (/* commentaire * / )
+ * Description of EasyCssAbstractElement
  *
  * @author PaperToss
  */
-class EasyCssCommentBlock extends EasyCssAbstractBlock
+abstract class EasyCssAbstractElement
 {
-    public $id;
+    protected $id;
+    protected $parent_id;
+    protected $raw_value;
     
-    public $title;
-    
-    public $to_display = false;
-    
-    public function __construct($id, $parent_id, $title)
+    protected function __construct($id, $parent_id, $value)
     {
         $this->id = $id;
-        $this->title = $title;
         $this->parent_id = $parent_id;
-    }
-    
-    public function get_css_to_save()
-    {
-        if ($this->parent_id === '' || $this->parent_id === '/main')
-        {
-            return "\n" . '/*' . $this->title . '*/' . "\n";
-        }
-        return '/*' . $this->title . '*/' . "\n";
+        $this->raw_value = $value;
     }
 }

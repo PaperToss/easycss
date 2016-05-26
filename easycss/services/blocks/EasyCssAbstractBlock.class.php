@@ -27,9 +27,9 @@
   ################################################### */
 
 /**
- * Description of EasyCssAbstractBlock
+ * Classe parente des blocs
  *
- * @author Toss
+ * @author PaperToss
  */
 abstract class EasyCssAbstractBlock
 {
@@ -71,7 +71,6 @@ abstract class EasyCssAbstractBlock
         {
             if (preg_match('`###(\d+)\/###`isU', $line, $matches))
             {
-                
                 /* @var $block \EasyCssAbstractBlock */       
                 $block = $this->children[$matches[1]];
                 if ($block->to_display && $block->on_error === false)

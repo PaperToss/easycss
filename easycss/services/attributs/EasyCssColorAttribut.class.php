@@ -34,7 +34,7 @@
 class EasyCssColorAttribut extends EasyCssAbstractAttribut
 {
 
-    protected $name_attribut = 'Color';
+    protected $name_attribut = 'color';
     
     public $to_display = true;
     
@@ -62,6 +62,10 @@ class EasyCssColorAttribut extends EasyCssAbstractAttribut
 
     public function get_text_to_file()
     {
+        if ($this->on_error)
+        {
+            return 'color : ' . trim($this->raw_value) . $this->is_important . ';' ;
+        }
         return 'color : ' . $this->values[0]->get_text_to_file() . $this->is_important . ';';
     }
 
@@ -83,6 +87,7 @@ class EasyCssColorAttribut extends EasyCssAbstractAttribut
     public function set_value_from_post(\HTTPRequestCustom $request)
     {
         parent::set_value_from_post($request);
+        
         $modif = false;
         foreach ($this->values as $key => &$val)
         {

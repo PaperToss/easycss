@@ -49,18 +49,19 @@ class AdminEasyCssEditController extends ModuleController
     /** @var string         Nom du fichier css */
     private $css_id;
 
-    /** @var int            Compteur de remplacement */
+    /** @staticvar int      Compteur de remplacement */
     public static $counter;
 
-    /** @var array          Elements remplacés */
+    /** @staticvar array    Elements remplacés */
     public static $vars;
 
     /** @staticvar string   Contenu du champ hidden (ID des éléments à modifier) */
     private static $hidden_input_content = '';
-    
+
+    /** @staticvar array    Erreurs à afficher */
     private static $errors = [];
 
-    /** @var \EasyCssMainBlock  Bloc Principal du CSS */
+    /** @staticvar \EasyCssMainBlock  Bloc Principal du CSS */
     private static $main_block;
 
     /**
@@ -131,21 +132,26 @@ class AdminEasyCssEditController extends ModuleController
      */
     private function put_templates()
     {
+        // Templates des attributs
         $forms_tpl = self::$main_block->get_templates();
         foreach ($forms_tpl as $tpl)
         {
             $tpls[] = array('SUBTEMPLATE' => $tpl);
         }
+
+        // Templates des erreurs
         $error_tpls = [];
         foreach (self::$errors as $error_tpl)
         {
             $error_tpls[] = array('SUBTEMPLATE' => $error_tpl);
         }
+
+        // Pousse à la vue
         $this->view->put_all([
-            'errors'          => $error_tpls,
-            'elements'          => $tpls,
-            'ELEMENTS_FIELDS'   => self::$hidden_input_content,
-            'FIELDSET_LEGEND'   => $this->lang['file_edit'] . $this->theme_id . ' / ' . $this->css_id,
+            'errors' => $error_tpls,
+            'elements' => $tpls,
+            'ELEMENTS_FIELDS' => self::$hidden_input_content,
+            'FIELDSET_LEGEND' => $this->lang['file_edit'] . $this->theme_id . ' / ' . $this->css_id,
         ]);
     }
 
@@ -209,7 +215,7 @@ class AdminEasyCssEditController extends ModuleController
     {
         self::$hidden_input_content .= $id . ';';
     }
-    
+
     /**
      * Ajoute une erreur de contenu
      * 
@@ -222,12 +228,15 @@ class AdminEasyCssEditController extends ModuleController
     }
 
     /**
+     * Retourne un attribut depuis son ID
      * 
-     * @param type $id
+     * @static
+     * @param string    ID complet de l'élément
      * @return \EasyCssAbstractAttribut
      */
     public static function get_element($id)
     {
         return self::$main_block->find_id($id);
     }
+
 }

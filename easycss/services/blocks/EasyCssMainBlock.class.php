@@ -27,7 +27,7 @@
   ################################################### */
 
 /**
- * Description of EasyCssMainBlock
+ * Bloc principal (CSS complet), qui contient tous les autres blocs
  *
  * @author PaperToss
  */

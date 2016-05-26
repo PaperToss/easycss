@@ -27,53 +27,80 @@
   ################################################### */
 
 /**
- * Description of EasyCssAbstractAttribut
+ * Classe mère des attributs à parser
  *
- * @author Toss
+ * @abstract
+ * @author PaperToss
  */
 abstract class EasyCssAbstractAttribut
 {
+    /** @var string     ID de l'attribut */
     protected $id;
     
+    /** @var string     ID complet du bloc parent */
     protected $parent_id;
     
+    /** @var string     Contenu CSS brut de l'attribut */
     protected $raw_value;
     
+    /** @var array      Eléments enfants de l'attribut */
     protected $values = [];
 
+    /** @var string     Si l'attribut à la propriété !important */
     protected $is_important = false;
     
+    /** @var bool       Attribut mis en erreur */
     public $on_error = false;
     
+    /** @var string     Nom de l'attribut, sert pour l'affichage des erreurs */
     protected $name_attribut = '';
     
+    /** @var string     Template à afficher avant les éléments */
     protected $begin_block = '<div class="easycss-field">';
     
+    /** @var string     Template à afficher après les éléments */
     protected $end_block = '</div>';
     
+    /** @var bool       Attribut à afficher sur la page d'édition */
     public $to_display = true;
     
-    protected $elements;
-    
+    /** @var string     Separateur d'éléments, false si l'attribut ne doit comporter qu'un élément */
     protected $separator = ' ';
+    
+    /** @var string     ID du champ important sur la page d'édition */
+    private $important_field_id;
     
     /** @var \EasyCssAbstractAttribut array  Attributs à parser*/
     public static $attributs = [
         'EasyCssColorAttribut',
     ];
     
-    /** @staticvar array Regex */
+    /** @staticvar array Différents Regex de l'attribut */
     public static $regex = [];
 
+    /**
+     * Constructeur protégé à appeler depuis chaque attribut
+     * 
+     * @param string ID de l'élément
+     * @param string ID du parent
+     * @param string Valeur brute du contenu de l'attribut
+     */
     protected function __construct($id, $parent_id, $value)
     {
         $this->id = $id;
         $this->parent_id = $parent_id;
-        $this->raw_value = $value;
+        $this->raw_value = trim($value);
         $this->check_important();
         $this->explode_elements();
+        $this->important_field_id = $this->parent_id .'/' . $this->id . '_important';
     }
     
+    /**
+     * Ajoute une erreur à l'attribut
+     * Met cet attribut en erreur et donc ne sera pas affiché
+     * 
+     * @param type $msg
+     */
     public function add_error($msg)
     {
         $tpl = new StringTemplate('<div>' . $this->name_attribut . ' : ' . $msg . '</div>');
@@ -83,20 +110,12 @@ abstract class EasyCssAbstractAttribut
     
     /**
      * Templates à afficher
-     * Retourne les templates des différents fields qui compose l'élément
+     * Retourne les templates des différents fields qui composent l'élément
      * 
      * @return \FileTemplate Template ou tableau de templates
      */
     public function get_templates($tpl, $label = false)
     {
-        $imp_tpl = new FileTemplate('easycss/fields/EasyCssImportantField.tpl');
-        $imp_tpl->put_all(array(
-            'NAME' => $this->parent_id .'/' . $this->id . '_important',
-            'ID' => $this->parent_id .'/' . $this->id . '_important',
-            'HTML_ID' => $this->parent_id .'/' . $this->id . '_important',
-            'CHECKED' => ($this->is_important !== false) ? 'checked="checked"' : '',
-            'LABEL' => 'Important'
-        ));
         if (!is_array($tpl))
             $tpls[] = $tpl;
         else
@@ -109,19 +128,22 @@ abstract class EasyCssAbstractAttribut
             $label_tpl = new StringTemplate('<h6>' . $label . '</h6>');
             array_unshift($tpls, $label_tpl);
         }
-        array_push($tpls, $imp_tpl);
+        array_push($tpls, $this->get_important_tpl());
         array_unshift($tpls, $begin_tpl);
         array_push($tpls, $end_tpl);
         return $tpls;
     }
     
+    /**
+     * Récupération et assignation auto des propriétés communes
+     * 
+     * @param \HTTPRequestCustom $request
+     */
     protected function set_value_from_post(\HTTPRequestCustom $request)
     {
-        $imp = $request->get_poststring($this->parent_id .'/' . $this->id . '_important', false);
-        if ($imp !== false)
-            $this->is_important = ' !important';
-        else
-            $this->is_important = false;
+        // Propriété !important
+        $imp = $request->get_poststring($this->important_field_id, false);
+        $this->is_important = ($imp === false) ? false : ' !important';
     }
 
 
@@ -145,6 +167,9 @@ abstract class EasyCssAbstractAttribut
         return get_called_class();
     }
     
+    /**
+     * Définition de la propriété is_important au constructeur
+     */
     private function check_important()
     {
         $pos = strpos($this->raw_value, '!important');
@@ -155,6 +180,11 @@ abstract class EasyCssAbstractAttribut
         }
     }
     
+    /**
+     * Explosion des valeurs selon le séparateur
+     * 
+     * @return array    Valeurs
+     */
     private function explode_elements()
     {
         if ($this->separator === false)
@@ -163,6 +193,24 @@ abstract class EasyCssAbstractAttribut
             return;
         }
         $this->values = explode($this->separator, trim($this->raw_value));
+    }
+    
+    /**
+     * Création et récupération du template de la propriété !important
+     * 
+     * @return \FileTemplate Template de la propriété Important
+     */
+    private function get_important_tpl()
+    {
+        $imp_tpl = new FileTemplate('easycss/fields/EasyCssImportantField.tpl');
+        $imp_tpl->put_all(array(
+            'NAME' => $this->important_field_id,
+            'ID' => $this->important_field_id,
+            'HTML_ID' => $this->important_field_id,
+            'CHECKED' => ($this->is_important !== false) ? 'checked="checked"' : '',
+            'LABEL' => 'Important'
+        ));
+        return $imp_tpl;
     }
     
 }
