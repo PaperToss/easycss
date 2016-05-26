@@ -46,12 +46,15 @@ abstract class EasyCssAbstractAttribut
     /** @var array      Eléments enfants de l'attribut */
     protected $values = [];
 
-    /** @var string     Si l'attribut à la propriété !important */
-    protected $is_important = false;
+    /** @var bool     Si l'attribut à la propriété !important */
+    private $is_important = false;
     
     /** @var bool       Attribut mis en erreur */
     public $on_error = false;
     
+    /** @var bool       Attribut modifié sur la page d'édition */
+    protected $is_modified = false;
+
     /** @var string     Nom de l'attribut, sert pour l'affichage des erreurs */
     protected $name_attribut = '';
     
@@ -143,7 +146,10 @@ abstract class EasyCssAbstractAttribut
     {
         // Propriété !important
         $imp = $request->get_poststring($this->important_field_id, false);
-        $this->is_important = ($imp === false) ? false : ' !important';
+        $imp = ($imp !== false) ? true : false;
+        if ($imp !== $this->is_important)
+            $this->is_modified = true;
+        $this->is_important = $imp;
     }
 
 
@@ -167,6 +173,11 @@ abstract class EasyCssAbstractAttribut
         return get_called_class();
     }
     
+    final protected function get_important_text()
+    {
+        return ($this->is_important === false) ? false : ' !important';
+    }
+
     /**
      * Définition de la propriété is_important au constructeur
      */
@@ -176,7 +187,7 @@ abstract class EasyCssAbstractAttribut
         if ($pos !== false)
         {
             $this->raw_value = str_replace('!important', '', $this->raw_value);
-            $this->is_important = ' !important';
+            $this->is_important = true;
         }
     }
     

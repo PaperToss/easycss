@@ -64,11 +64,16 @@ class EasyCssColorAttribut extends EasyCssAbstractAttribut
     {
         if ($this->on_error)
         {
-            return 'color : ' . trim($this->raw_value) . $this->is_important . ';' ;
+            return 'color : ' . trim($this->raw_value) . parent::get_important_text() . ';' ;
         }
-        return 'color : ' . $this->values[0]->get_text_to_file() . $this->is_important . ';';
+        return 'color : ' . $this->get_text_to_modif() . ';';
     }
 
+    protected function get_text_to_modif()
+    {
+        return $this->values[0]->get_text_to_file() . parent::get_important_text();
+    }
+    
     public function get_templates($label = false)
     {
         $tpls = [];
@@ -88,20 +93,17 @@ class EasyCssColorAttribut extends EasyCssAbstractAttribut
     {
         parent::set_value_from_post($request);
         
-        $modif = false;
         foreach ($this->values as $key => &$val)
         {
             $modified_element = $val->set_value_from_post($request);
             if ($modified_element !== false)
             {
-                $modif = true;
+                $this->is_modified = true;
             }
         }
-        if ($modif === true)
+        if ($this->is_modified === true)
         {
-            if ($this->separator === false)
-                return $this->values[0]->get_text_to_file();
-            return implode($this->separator, $this->values->get_text_to_file());
+            return $this->get_text_to_modif();
         }
         return false;
     }
