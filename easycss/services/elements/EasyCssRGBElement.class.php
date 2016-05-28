@@ -48,10 +48,15 @@ class EasyCssRGBElement extends EasyCssAbstractElement
         $this->color = new EasyCssRGBColorValue($this->color_id, $rgbcolor);
     }
 
-    public function get_templates()
+    public function get_templates($label = false)
     {
+        if ($label === false)
+        {
+            $label = LangLoader::get_message('color_description', 'common', 'easycss');
+        }
+        
         AdminEasyCssEditController::add_field_to_hidden_input($this->parent_id . '/' . $this->id);
-        return [$this->color->get_form(LangLoader::get_message('color_description', 'common', 'easycss'))];
+        return [$this->color->get_form($label)];
     }
 
     public function set_value_from_post(\HTTPRequestCustom $request)

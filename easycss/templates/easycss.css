@@ -28,9 +28,15 @@ ul.tabs li.current{
 }
 
 .easycss-element {
-    width: 24%;
+    width: 23.5%;
     margin-right: 1%;
     display: inline-block;
+}
+
+.easycss-element label {
+    width: 46%;
+    display: inline-block;
+    text-align: right;
 }
 
 .easycss-block {
@@ -64,7 +70,7 @@ ul.tabs li.current{
 /* Fields */
 input[type="text"], input[type="url"], input[type="number"], input[type="color"] {
     padding:5px;
-    width: 80px;
+    width: 46%;
     height:30px;
     margin:3px;
 }

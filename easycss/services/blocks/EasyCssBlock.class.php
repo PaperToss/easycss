@@ -61,7 +61,7 @@ class EasyCssBlock extends EasyCssAbstractBlock
                 $css = preg_replace_callback($regex, function ($matches) use($name)
                 {
                     $this->counter++;
-                    $this->children[$this->counter] = new $name($this->counter, $this->parent_id . '/' . $this->id, $matches[1]);
+                    $this->children[$this->counter] = new $name($this->counter, $this->parent_id . '/' . $this->id, $matches);
                     return "\n" . '###' . $this->counter . '/###' . "\n";
                 }, $css);
             }

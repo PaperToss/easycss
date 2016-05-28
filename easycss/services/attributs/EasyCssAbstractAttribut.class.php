@@ -76,6 +76,7 @@ abstract class EasyCssAbstractAttribut
     /** @var \EasyCssAbstractAttribut array  Attributs à parser*/
     public static $attributs = [
         'EasyCssColorAttribut',
+        'EasyCssBorderColorAttribut',
     ];
     
     /** @staticvar array Différents Regex de l'attribut */
@@ -137,12 +138,30 @@ abstract class EasyCssAbstractAttribut
         return $tpls;
     }
     
+    public function set_value_from_post(\HTTPRequestCustom $request)
+    {
+        $this->set_autovalues_from_post($request);
+        
+        foreach ($this->values as $key => &$val)
+        {
+            $modified_element = $val->set_value_from_post($request);
+            if ($modified_element !== false)
+            {
+                $this->is_modified = true;
+            }
+        }
+        if ($this->is_modified === true)
+        {
+            return $this->get_text_to_modif();
+        }
+        return false;
+    }
     /**
      * Récupération et assignation auto des propriétés communes
      * 
      * @param \HTTPRequestCustom $request
      */
-    protected function set_value_from_post(\HTTPRequestCustom $request)
+    protected function set_autovalues_from_post(\HTTPRequestCustom $request)
     {
         // Propriété !important
         $imp = $request->get_poststring($this->important_field_id, false);
@@ -203,7 +222,12 @@ abstract class EasyCssAbstractAttribut
             $this->values[] = trim($this->raw_value);
             return;
         }
+        $this->raw_value = EasyCssColorsManager::sanitise($this->raw_value);
         $this->values = explode($this->separator, trim($this->raw_value));
+        $this->values = array_values(array_filter($this->values));
+        
+        if (empty($this->values))
+            $this->add_error('Wrong arguments : ' . $this->raw_value);
     }
     
     /**

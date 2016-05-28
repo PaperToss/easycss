@@ -54,11 +54,15 @@ class EasyCssRGBAElement extends EasyCssAbstractElement
         $this->transparency = new EasyCssTransparencyValue($this->transparency_id, $values[3]);
     }
 
-    public function get_templates()
+    public function get_templates($label = false)
     {
+        if ($label === false)
+        {
+            $label = LangLoader::get_message('color_description', 'common', 'easycss');
+        }
         AdminEasyCssEditController::add_field_to_hidden_input($this->parent_id . '/' . $this->id);
-        return [$this->color->get_form(LangLoader::get_message('color_description', 'common', 'easycss')),
-            $this->transparency->get_form(LangLoader::get_message('transparency_description', 'common', 'easycss'))];
+        return [$this->color->get_form($label),
+            $this->transparency->get_form(AdminEasyCssEditController::get_lang('transparency_description'))];
     }
 
     public function set_value_from_post(\HTTPRequestCustom $request)
@@ -75,7 +79,7 @@ class EasyCssRGBAElement extends EasyCssAbstractElement
 
     public function get_text_to_file()
     {
-        return 'rgba(' . $this->color->get_color() . ', ' . $this->transparency->get_transparency() . ')';
+        return 'rgba(' . $this->color->get_color() . ',' . $this->transparency->get_transparency() . ')';
     }
 
 }

@@ -37,8 +37,8 @@ class AdminEasyCssEditController extends ModuleController
     /** @var \FileTemplate  Vue */
     private $view;
 
-    /** @var array          Array de langue */
-    private $lang;
+    /** @staticvar array          Array de langue */
+    private static $lang;
 
     /** @var \File          Fichier CSS chargé */
     private $file;
@@ -92,11 +92,15 @@ class AdminEasyCssEditController extends ModuleController
      */
     private function init()
     {
-        $this->lang = LangLoader::get('common', 'easycss');
+        self::$lang = LangLoader::get('common', 'easycss');
         $this->view = new FileTemplate('easycss/AdminEditController.tpl');
-        $this->view->add_lang($this->lang);
+        $this->view->add_lang(self::$lang);
     }
 
+    public static function get_lang($title)
+    {
+        return isset(self::$lang[$title]) ? self::$lang[$title] : '';
+    }
     /**
      * Récupération du fichier CSS à modifier
      * 
@@ -151,7 +155,7 @@ class AdminEasyCssEditController extends ModuleController
             'errors' => $error_tpls,
             'elements' => $tpls,
             'ELEMENTS_FIELDS' => self::$hidden_input_content,
-            'FIELDSET_LEGEND' => $this->lang['file_edit'] . $this->theme_id . ' / ' . $this->css_id,
+            'FIELDSET_LEGEND' => self::$lang['file_edit'] . $this->theme_id . ' / ' . $this->css_id,
         ]);
     }
 
@@ -168,7 +172,7 @@ class AdminEasyCssEditController extends ModuleController
         self::$main_block->replace_with_post($post_elements, $request);
         $this->write_to_file();
         $this->clear_css_cache();
-        $this->view->put('MSG', MessageHelper::display($this->lang['file_edit_success'], MessageHelper::SUCCESS, 5));
+        $this->view->put('MSG', MessageHelper::display(self::$lang['file_edit_success'], MessageHelper::SUCCESS, 5));
     }
 
     /**
@@ -180,7 +184,7 @@ class AdminEasyCssEditController extends ModuleController
     private function build_response(View $view)
     {
         $response = new AdminDisplayResponse($view);
-        $response->get_graphical_environment()->set_page_title($this->lang['module_title']);
+        $response->get_graphical_environment()->set_page_title(self::$lang['module_title']);
         return $response;
     }
 

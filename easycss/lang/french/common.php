@@ -44,4 +44,10 @@ $lang['max-width'] = 'Largeur maximale';
 // Champs
 $lang['background_color_description'] = 'Couleur de fond';
 $lang['color_description'] = 'Couleur';
+$lang['border_color_description'] = 'Couleur de bordure';
 $lang['transparency_description'] = 'Opacité';
+
+$lang['left'] = 'Gauche';
+$lang['right'] = 'Droit';
+$lang['top'] = 'Haut';
+$lang['bottom'] = 'Bas';

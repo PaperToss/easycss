@@ -205,6 +205,21 @@ class EasyCssColorsManager
         return (self::is_name_color($value) || self::is_rgba_color($value) || self::is_rgb_color($value) || self::is_hex_color($value));
     }
     
+    public static function sanitise($value)
+    {
+        $val = preg_split('`\((.*)\)`isU', $value, NULL, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $strval = '';
+        foreach ($val as $key => $v)
+        {
+            if ($key % 2)
+            {
+                $v = '(' . str_replace(" ", '', $v) . ')';
+            }
+            $strval .= $v;
+        }
+        echo $strval;
+        return $strval;
+    }
     protected static function is_name_color($value)
     {
         return array_key_exists($value, self::$colors_words);

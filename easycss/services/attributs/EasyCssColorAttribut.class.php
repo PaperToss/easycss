@@ -29,7 +29,7 @@
 /**
  * Description of EasyCssColorAttribut
  *
- * @author Toss
+ * @author PaperToss
  */
 class EasyCssColorAttribut extends EasyCssAbstractAttribut
 {
@@ -45,13 +45,15 @@ class EasyCssColorAttribut extends EasyCssAbstractAttribut
         '`(?<=[^-])color\s*:(.*);`isU',
     ];
 
-    public function __construct($id, $parent_id, $value)
+    public function __construct($id, $parent_id, $matches)
     {
+        $value = $matches[1];
         parent::__construct($id, $parent_id, $value);
         if (!EasyCssColorsManager::is_color($this->values[0]))
         {
             $this->add_error('Wrong arguments : ' . $this->values[0]);
-        } else
+        } 
+        else
         {
             foreach ($this->values as $key => &$val)
             {
@@ -74,7 +76,7 @@ class EasyCssColorAttribut extends EasyCssAbstractAttribut
         return $this->values[0]->get_text_to_file() . parent::get_important_text();
     }
     
-    public function get_templates($label = false)
+    public function get_templates()
     {
         $tpls = [];
         foreach ($this->values as $tpl)
@@ -89,23 +91,6 @@ class EasyCssColorAttribut extends EasyCssAbstractAttribut
         return parent::get_templates($tpls, LangLoader::get_message('color_description', 'common', 'easycss'));
     }
 
-    public function set_value_from_post(\HTTPRequestCustom $request)
-    {
-        parent::set_value_from_post($request);
-        
-        foreach ($this->values as $key => &$val)
-        {
-            $modified_element = $val->set_value_from_post($request);
-            if ($modified_element !== false)
-            {
-                $this->is_modified = true;
-            }
-        }
-        if ($this->is_modified === true)
-        {
-            return $this->get_text_to_modif();
-        }
-        return false;
-    }
+    
 
 }
