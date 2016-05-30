@@ -52,7 +52,7 @@ class EasyCssHexElement extends EasyCssAbstractElement
         {
             $label = LangLoader::get_message('color_description', 'common', 'easycss');
         }
-        AdminEasyCssEditController::add_field_to_hidden_input($this->parent_id . '/' . $this->id);
+
         return [$this->color->get_form($label)];
     }
 
