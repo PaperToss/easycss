@@ -198,6 +198,11 @@ class EasyCssColorsManager
         {
             return new EasyCssHexElement($id, $parent_id, $value);
         }
+        elseif (self::is_name_color($value))
+        {
+            return new EasyCssHexElement($id, $parent_id, '#' . self::$colors_words[$value]);
+        }
+        return false;
     }
     
     public static function is_color($value)
