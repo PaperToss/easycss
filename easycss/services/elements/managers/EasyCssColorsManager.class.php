@@ -217,7 +217,6 @@ class EasyCssColorsManager
             }
             $strval .= $v;
         }
-        echo $strval;
         return $strval;
     }
     protected static function is_name_color($value)

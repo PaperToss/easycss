@@ -64,27 +64,9 @@ class EasyCssBorderColorAttribut extends EasyCssAbstractAttribut
             $this->build_borders_array();
     }
     
-    public function get_text_to_file()
-    {
-        if ($this->on_error)
-        {
-            return 'border-color : ' . trim($this->raw_value) . parent::get_important_text() . ';' ;
-        }
-        return 'border-color : ' . $this->get_text_to_modif() . ';';
-    }
-
-    protected function get_text_to_modif()
-    {
-        $str = '';
-        foreach ($this->values as $val)
-        {
-            $str .= $val->get_text_to_file() . $this->separator;
-        }
-        return $str . parent::get_important_text();
-    }
-    
     public function get_templates()
     {
+        AdminEasyCssEditController::add_field_to_hidden_input($this->parent_id . '/' . $this->id);
         $tpls = [];
         foreach ($this->values as $key => $tpl)
         {

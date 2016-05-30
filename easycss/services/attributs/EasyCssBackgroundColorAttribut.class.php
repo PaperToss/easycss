@@ -1,7 +1,7 @@
 <?php
 
 /* #################################################
- *                           EasyCssColorAttribut.class.php
+ *                           EasyCssBackgroundColorAttribut.class.php
  *                            -------------------
  *   begin                : 2016/04/22
  *   copyright            : (C) 2016 PaperToss
@@ -27,40 +27,19 @@
   ################################################### */
 
 /**
- * Description of EasyCssColorAttribut
+ * Description of EasyCssBackgroundColorAttribut
  *
  * @author PaperToss
  */
-class EasyCssColorAttribut extends EasyCssAbstractAttribut
+class EasyCssBackgroundColorAttribut extends EasyCssColorAttribut
 {
 
-    protected $name_attribut = 'color';
-    
-    public $to_display = true;
-    
-    protected $separator = false;
+    protected $name_attribut = 'background-color';
 
     /** @staticvar array Regex */
     public static $regex = [
-        '`(?<=[^-])color\s*:(.*);`isU',
+        '`(?<=[^-])background-color\s*:(.*);`isU',
     ];
-
-    public function __construct($id, $parent_id, $matches)
-    {
-        $value = $matches[1];
-        parent::__construct($id, $parent_id, $value);
-        if (!EasyCssColorsManager::is_color($this->values[0]))
-        {
-            $this->add_error('Wrong arguments : ' . $this->values[0]);
-        } 
-        else
-        {
-            foreach ($this->values as $key => &$val)
-            {
-                $val = EasyCssColorsManager::create_color($key, $this->parent_id . '/' . $this->id, $val);
-            }
-        }
-    }
     
     public function get_templates()
     {
@@ -75,7 +54,7 @@ class EasyCssColorAttribut extends EasyCssAbstractAttribut
             }
         }
 
-        return parent::get_templates($tpls, LangLoader::get_message('color_description', 'common', 'easycss'));
+        return EasyCssAbstractAttribut::get_templates($tpls, LangLoader::get_message('background_color_description', 'common', 'easycss'));
     }
 
     

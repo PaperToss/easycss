@@ -77,6 +77,7 @@ abstract class EasyCssAbstractAttribut
     public static $attributs = [
         'EasyCssColorAttribut',
         'EasyCssBorderColorAttribut',
+        'EasyCssBackgroundColorAttribut',
     ];
     
     /** @staticvar array Différents Regex de l'attribut */
@@ -152,7 +153,7 @@ abstract class EasyCssAbstractAttribut
         }
         if ($this->is_modified === true)
         {
-            return $this->get_text_to_modif();
+            return $this->get_values_text();
         }
         return false;
     }
@@ -173,14 +174,38 @@ abstract class EasyCssAbstractAttribut
 
 
     /**
-     * @abstract
      * Texte de retour
      * Retourne le texte qui sera écrit dans le fichier CSS après modification
      * 
      * @return string Déclaration pour enregistrement dans le fichier CSS
      */
-    abstract public function get_text_to_file();
+    public function get_text_to_file()
+    {
+        if ($this->on_error)
+        {
+            return $this->name_attribut . ' : ' . trim($this->raw_value) . $this->get_important_text() . ';' ;
+        }
+        return $this->name_attribut . ' : ' . $this->get_values_text() . ';';
+    }
     
+    /**
+     * Retourne le contenu CSS des éléments de l'attribut
+     * 
+     * @return string Valeur des éléments de l'attribut
+     */
+    protected function get_values_text()
+    {
+        if ($this->separator === false)
+        {
+            return $this->values[0]->get_text_to_file() . $this->get_important_text();
+        }
+        $str = '';
+        foreach ($this->values as $val)
+        {
+            $str .= $val->get_text_to_file() . $this->separator;
+        }
+        return $str . $this->get_important_text();
+    }
     
     /**
      * Retourne le nom de la classe de l'élément
