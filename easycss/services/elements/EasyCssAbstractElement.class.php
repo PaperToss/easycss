@@ -41,6 +41,6 @@ abstract class EasyCssAbstractElement
     {
         $this->id = $id;
         $this->parent_id = $parent_id;
-        $this->raw_value = $value;
+        $this->raw_value = trim($value);
     }
 }

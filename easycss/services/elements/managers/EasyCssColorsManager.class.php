@@ -33,6 +33,8 @@
  */
 class EasyCssColorsManager
 {
+    use EasyCssColorTrait;
+    
     public static $colors_words  = [
         'aliceblue'=>'F0F8FF',
         'antiquewhite'=>'FAEBD7',
@@ -182,6 +184,10 @@ class EasyCssColorsManager
         'yellow'=>'FFFF00',
         'yellowgreen'=>'9ACD32'];
     
+    protected static $others_values = [
+        'transparent', 'inherit', 'initial'
+    ];
+    
     public static function create_color($id, $parent_id, $value)
     {
         if (!self::is_color($value))
@@ -202,12 +208,16 @@ class EasyCssColorsManager
         {
             return new EasyCssHexElement($id, $parent_id, '#' . self::$colors_words[$value]);
         }
+        elseif (self::is_other_color_value($value))
+        {
+            return new EasyCssOtherElement($id, $parent_id, $value);
+        }
         return false;
     }
     
     public static function is_color($value)
     {
-        return (self::is_name_color($value) || self::is_rgba_color($value) || self::is_rgb_color($value) || self::is_hex_color($value));
+        return (self::is_name_color($value) || self::is_rgba_color($value) || self::is_rgb_color($value) || self::is_hex_color($value) || self::is_other_color_value($value));
     }
     
     public static function sanitise($value)
@@ -224,6 +234,7 @@ class EasyCssColorsManager
         }
         return $strval;
     }
+    
     protected static function is_name_color($value)
     {
         return array_key_exists($value, self::$colors_words);
@@ -243,4 +254,10 @@ class EasyCssColorsManager
     {
         return preg_match('`^\s*#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})\s*$`i', $value);
     }
+    
+    protected static function is_other_color_value($value)
+    {
+        return in_array($value, self::$others_values);
+    }
+
 }

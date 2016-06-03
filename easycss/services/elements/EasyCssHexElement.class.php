@@ -33,17 +33,18 @@
  */
 class EasyCssHexElement extends EasyCssAbstractElement
 {
-
+    use EasyCssColorTrait;
+    
     protected $color;
     protected $color_id;
-
+    
     public function __construct($id, $parent_id, $value)
     {
         parent::__construct($id, $parent_id, $value);
         $this->color_id = $this->parent_id . '/' . $this->id . '_color';
-        preg_match('`^\s*#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})\s*$`i', $value, $matches);
+        $color = self::get_hex_value_from_str($value);
 
-        $this->color = new EasyCssHexColorValue($this->color_id, $matches[1]);
+        $this->color = new EasyCssHexColorValue($this->color_id, $color);
     }
 
     public function get_templates($label = false)
@@ -52,7 +53,7 @@ class EasyCssHexElement extends EasyCssAbstractElement
         {
             $label = LangLoader::get_message('color_description', 'common', 'easycss');
         }
-
+        
         return [$this->color->get_form($label)];
     }
 

@@ -80,6 +80,7 @@ class AdminEasyCssEditController extends ModuleController
         if ($request->is_post_method())
         {
             $this->post_process($request);
+            $this->create_objects_elements();
         }
 
         $this->put_templates();

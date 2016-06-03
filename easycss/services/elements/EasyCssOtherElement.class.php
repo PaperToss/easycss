@@ -1,9 +1,9 @@
 <?php
 
 /* #################################################
- *                           EasyCssRGBElement.class.php
+ *                           EasyCssOtherElement.class.php
  *                            -------------------
- *   begin                : 2016/05/22
+ *   begin                : 2016/06/01
  *   copyright            : (C) 2016 Toss
  *   email                : t0ssp4p3r@gmail.com
  *
@@ -27,54 +27,40 @@
   ################################################### */
 
 /**
- * Description of EasyCssRGBElement
+ * Description of EasyCssOtherElement
  *
- * @author Toss
+ * @author PaperToss
  */
-class EasyCssRGBElement extends EasyCssAbstractElement
+class EasyCssOtherElement extends EasyCssAbstractElement
 {
-    
-    use EasyCssColorTrait;
-    
-    protected $color;
-    protected $color_id;
+    /** @var \EasyCssOtherValue */
+    protected $value;
+    protected $value_id;
 
     public function __construct($id, $parent_id, $value)
     {
         parent::__construct($id, $parent_id, $value);
-        $this->color_id = $this->parent_id . '/' . $this->id . '_color';
-        
-        $color = self::get_rgb_value_from_str($value);
-
-        $values = explode(',', $color);
-
-        $rgbcolor = $values[0] . ',' . $values[1] . ',' . $values[2];
-        $this->color = new EasyCssRGBColorValue($this->color_id, $rgbcolor);
+        $this->value_id = $this->parent_id . '/' . $this->id . '_other';
+        $this->value = new EasyCssOtherValue($this->value_id, $this->raw_value);
     }
-
-    public function get_templates($label = false)
-    {
-        if ($label === false)
-        {
-            $label = LangLoader::get_message('color_description', 'common', 'easycss');
-        }
-        
-        return [$this->color->get_form($label)];
+    
+    public function get_templates($label = '')
+    {        
+        return [$this->value->get_form($label)];
     }
 
     public function set_value_from_post(\HTTPRequestCustom $request)
     {
-        $color_value = $request->get_poststring($this->color_id, false);
-        $color_modif = $this->color->set_value($color_value);
+        $value = $request->get_poststring($this->value_id, false);
+        $value_modif = $this->value->set_value($value);
 
-        if ($color_modif)
+        if ($value_modif)
             return $this->get_text_to_file();
         return false;
     }
 
     public function get_text_to_file()
     {
-        return 'rgb(' . $this->color->get_color() . ')';
+        return $this->value->get_value();
     }
-
 }

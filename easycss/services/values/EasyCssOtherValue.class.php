@@ -1,9 +1,9 @@
 <?php
 
 /* #################################################
- *                           EasyCsRGBColorValue.class.php
+ *                           EasyCssOtherValue.class.php
  *                            -------------------
- *   begin                : 2016/05/19
+ *   begin                : 2016/05/20
  *   copyright            : (C) 2016 Toss
  *   email                : t0ssp4p3r@gmail.com
  *
@@ -27,61 +27,45 @@
   ################################################### */
 
 /**
- * Description of EasyCssRGBColorValue
+ * Description of EasyCssOtherValue
  *
  * @author PaperToss
  */
-class EasyCssRGBColorValue extends EasyCssAbstractValue
+class EasyCssOtherValue extends EasyCssAbstractValue
 {
-    use EasyCssColorTrait;
+    protected $value;
     
-    protected $rgb_color;
-    
-    protected $hex_color;
-    
-    public function __construct($id, $rgbcolor)
+    public function __construct($id, $value)
     {
         parent::__construct($id);
-        
-        $values = explode(',', $rgbcolor);
-        $this->rgb_color = $values[0] . ',' . $values[1] . ',' . $values[2];
-        $r = self::rgb_to_hex($values[0]);
-        $g = self::rgb_to_hex($values[1]);
-        $b = self::rgb_to_hex($values[2]);
-        $this->hex_color = $r . $g . $b;
+        $this->set_value($value);
+    }
+    
+    public function set_value($value)
+    {
+        if ($this->value === $value)
+        {
+            return false;
+        }
+        $this->value = $value;
+        return $this->value;
     }
     
     public function get_form($label)
     {
-        $tpl = new FileTemplate('easycss/fields/EasyCssColorField.tpl');
+        $tpl = new FileTemplate('easycss/fields/EasyCssOtherField.tpl');
         $tpl->put_all(array(
-            'NAME' =>$this->id,
+            'NAME' => $this->id,
             'ID' => $this->id,
-            'VALUE' => '#' . $this->hex_color,
-            'LABEL' => $label,
+            'HTML_ID' => $this->id,
+            'VALUE' => $this->value,
+            'LABEL' => $label
         ));
         return $tpl;
     }
     
-    public function get_color()
+    public function get_value()
     {
-        return $this->rgb_color;
+        return $this->value;
     }
-
-
-    public function set_value($hexcolor)
-    {
-        $rgbcolor = self::hex_to_rgb($hexcolor);
-        if ($this->rgb_color == $rgbcolor)
-        {
-            return false;
-        }
-        $this->rgb_color = $rgbcolor;
-        if (substr($hexcolor,0,1) == '#' )
-                $hexcolor = substr($hexcolor,1);
-        $this->hex_color = $hexcolor;
-        return $this->rgb_color;
-    }
-    
-    
 }

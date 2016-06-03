@@ -34,6 +34,7 @@
 class EasyCssRGBAElement extends EasyCssAbstractElement
 {
 
+    use EasyCssColorTrait;
     
     protected $color;
     protected $color_id;
@@ -45,9 +46,9 @@ class EasyCssRGBAElement extends EasyCssAbstractElement
         parent::__construct($id, $parent_id, $value);
         $this->color_id = $this->parent_id . '/' . $this->id . '_color';
         $this->transparency_id = $this->parent_id . '/' . $this->id . '_transparency';
-        preg_match('`\s*rgba\s*\((.*)\)\s*`i', $value, $matches);
+        $color = self::get_rgba_value_from_str($value);
 
-        $values = explode(',', $matches[1]);
+        $values = explode(',', $color);
 
         $rgbcolor = $values[0] . ',' . $values[1] . ',' . $values[2];
         $this->color = new EasyCssRGBColorValue($this->color_id, $rgbcolor);
