@@ -78,6 +78,7 @@ abstract class EasyCssAbstractAttribut
         'EasyCssColorAttribut',
         'EasyCssBorderColorAttribut',
         'EasyCssBackgroundColorAttribut',
+        'EasyCssBackgroundAttribut',
     ];
     
     /** @staticvar array Différents Regex de l'attribut */
