@@ -49,24 +49,17 @@ class EasyCssBorderAttribut extends EasyCssAbstractAttribut
     {
         $value = $matches[1];
         parent::__construct($id, $parent_id, $value);
-        if (!EasyCssColorsManager::is_color($this->values[2]) || count($this->values) != 3)
+        foreach ($this->values as $key => &$val)
         {
-            $this->add_error('Wrong arguments : ' . $this->raw_value);
-        } 
-        else
-        {
-            foreach ($this->values as $key => &$val)
+            if (EasyCssColorsManager::is_color($val))
             {
-                if (EasyCssColorsManager::is_color($val))
-                {
-                    $val = EasyCssColorsManager::create_color($key, $this->parent_id . '/' . $this->id, $val);
-                }
-                else
-                {
-                    $val = new EasyCssGenericElement($key, $this->parent_id . '/' . $this->id, $val);
-                }
-                
+                $val = EasyCssColorsManager::create_color($key, $this->parent_id . '/' . $this->id, $val);
             }
+            else
+            {
+                $val = new EasyCssGenericElement($key, $this->parent_id . '/' . $this->id, $val);
+            }
+
         }
     }
     

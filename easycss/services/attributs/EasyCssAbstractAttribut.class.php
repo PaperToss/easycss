@@ -253,6 +253,11 @@ abstract class EasyCssAbstractAttribut
         }
         $this->raw_value = EasyCssColorsManager::sanitise($this->raw_value);
         $this->values = explode($this->separator, trim($this->raw_value));
+        foreach ($this->values as &$val)
+        {
+            if ($val === '0')
+                $val = 'none';
+        }
         $this->values = array_values(array_filter($this->values));
         
         if (empty($this->values))

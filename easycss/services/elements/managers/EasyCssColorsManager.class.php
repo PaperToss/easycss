@@ -185,7 +185,7 @@ class EasyCssColorsManager
         'yellowgreen'=>'9ACD32'];
     
     protected static $others_values = [
-        'transparent', 'inherit', 'initial'
+        'transparent', 'inherit', 'initial', 'none'
     ];
     
     public static function create_color($id, $parent_id, $value)
