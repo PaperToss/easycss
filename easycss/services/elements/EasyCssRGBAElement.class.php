@@ -59,7 +59,7 @@ class EasyCssRGBAElement extends EasyCssAbstractElement
     {
         if ($label === false)
         {
-            $label = LangLoader::get_message('color_description', 'common', 'easycss');
+            $label = AdminEasyCssEditController::get_lang('color_description');
         }
         
         return [$this->color->get_form($label),

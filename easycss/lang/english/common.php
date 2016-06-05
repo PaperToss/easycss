@@ -27,35 +27,35 @@
  ###################################################*/
 
  ####################################################
- # French #
+ # English  #
  ####################################################
 
 $lang['module_title'] = 'EasyCss';
 
-$lang['theme_choice'] = 'Choix du thème';
-$lang['file_edit'] = 'Edition du fichier ';
-$lang['edit_description'] = 'Modifiez les éléments ci-dessous puis validez en cliquant sur \'Envoyer\'';
+$lang['theme_choice'] = 'Theme choice';
+$lang['file_edit'] = 'Edit file ';
+$lang['edit_description'] = 'Modify elements below and valid with clic on \'Send\'';
 
-$lang['file_edit_success'] = 'Le fichier a bien été modifié';
+$lang['file_edit_success'] = 'The file has been saved successfully';
 
 // Blocs
-$lang['min-width'] = 'Largeur minimale';
-$lang['max-width'] = 'Largeur maximale';
+$lang['min-width'] = 'Minimal width';
+$lang['max-width'] = 'Maximal width';
 // Champs
-$lang['background_description'] = 'Fond';
-$lang['background_color_description'] = 'Couleur de fond';
-$lang['color_description'] = 'Couleur';
-$lang['border_description'] = 'Bordures';
-$lang['border_bottom_description'] = 'Bordure basse';
-$lang['border_left_description'] = 'Bordure gauche';
-$lang['border_right_description'] = 'Bordure droite';
-$lang['border_top_description'] = 'Bordure haute';
-$lang['border_color_description'] = 'Couleur de bordure';
-$lang['transparency_description'] = 'Opacité';
+$lang['background_description'] = 'Background';
+$lang['background_color_description'] = 'Background color';
+$lang['color_description'] = 'Color';
+$lang['border_description'] = 'Borders';
+$lang['border_bottom_description'] = 'Bottom border';
+$lang['border_left_description'] = 'Left border';
+$lang['border_right_description'] = 'Right Border';
+$lang['border_top_description'] = 'Top border';
+$lang['border_color_description'] = 'Border color';
+$lang['transparency_description'] = 'Opacity';
 
-$lang['left'] = 'Gauche';
-$lang['right'] = 'Droit';
-$lang['top'] = 'Haut';
-$lang['bottom'] = 'Bas';
+$lang['left'] = 'Left';
+$lang['right'] = 'Right';
+$lang['top'] = 'Top';
+$lang['bottom'] = 'Bottom';
 
 $lang['important'] = 'Important';

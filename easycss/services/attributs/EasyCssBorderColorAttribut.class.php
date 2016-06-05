@@ -78,7 +78,7 @@ class EasyCssBorderColorAttribut extends EasyCssAbstractAttribut
             $tpls[] = new StringTemplate("<br/>");
         }
 
-        return parent::get_templates($tpls, LangLoader::get_message('border_color_description', 'common', 'easycss'));
+        return parent::get_templates($tpls, AdminEasyCssEditController::get_lang('border_color_description'));
     }
     
     private function build_borders_array()

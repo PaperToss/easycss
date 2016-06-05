@@ -272,7 +272,7 @@ abstract class EasyCssAbstractAttribut
             'ID' => $this->important_field_id,
             'HTML_ID' => $this->important_field_id,
             'CHECKED' => ($this->is_important !== false) ? 'checked="checked"' : '',
-            'LABEL' => 'Important'
+            'LABEL' => AdminEasyCssEditController::get_lang('important')
         ));
         return $imp_tpl;
     }

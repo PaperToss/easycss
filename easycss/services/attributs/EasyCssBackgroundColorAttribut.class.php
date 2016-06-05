@@ -54,7 +54,7 @@ class EasyCssBackgroundColorAttribut extends EasyCssColorAttribut
             }
         }
 
-        return EasyCssAbstractAttribut::get_templates($tpls, LangLoader::get_message('background_color_description', 'common', 'easycss'));
+        return EasyCssAbstractAttribut::get_templates($tpls, AdminEasyCssEditController::get_lang('background_color_description'));
     }
 
     

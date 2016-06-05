@@ -83,7 +83,7 @@ class EasyCssBorderAttribut extends EasyCssAbstractAttribut
             }
         }
 
-        return parent::get_templates($tpls, LangLoader::get_message('border_description', 'common', 'easycss'));
+        return parent::get_templates($tpls, AdminEasyCssEditController::get_lang('border_description'));
     }
        
 

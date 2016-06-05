@@ -82,6 +82,6 @@ class EasyCssBackgroundAttribut extends EasyCssAbstractAttribut
                 $tpls[] = new StringTemplate("<br/>");
         }
 
-        return parent::get_templates($tpls, LangLoader::get_message('background_description', 'common', 'easycss'));
+        return parent::get_templates($tpls, AdminEasyCssEditController::get_lang('background_description'));
     }
 }

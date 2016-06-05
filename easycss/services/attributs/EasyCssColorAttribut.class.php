@@ -75,7 +75,7 @@ class EasyCssColorAttribut extends EasyCssAbstractAttribut
             }
         }
 
-        return parent::get_templates($tpls, LangLoader::get_message('color_description', 'common', 'easycss'));
+        return parent::get_templates($tpls, AdminEasyCssEditController::get_lang('color_description'));
     }
        
 
