@@ -72,7 +72,7 @@ class EasyCssBorderXAttribut extends EasyCssAbstractAttribut
         $tpls = [];
         foreach ($this->values as $tpl)
         {
-            $templates = $tpl->get_templates(AdminEasyCssEditController::get_lang($this->key));
+            $templates = $tpl->get_templates();
             foreach ($templates as $value_tpl)
             {
                 $tpls[] = $value_tpl;
