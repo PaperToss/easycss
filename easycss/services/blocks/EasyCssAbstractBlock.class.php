@@ -187,7 +187,7 @@ abstract class EasyCssAbstractBlock
      */
     protected function parse_block($css)
     {
-        return preg_replace_callback('`\s*([^#|\/]*)\{(.*)\}`isU', array($this, 'replace_parse_block'), $css );
+        return preg_replace_callback('`\s*((?:(?!#\s|\/).)*)\{(.*)\}`isU', array($this, 'replace_parse_block'), $css );
     }
     
     /**
