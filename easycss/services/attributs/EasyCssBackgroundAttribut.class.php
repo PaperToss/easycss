@@ -4,7 +4,7 @@
  *                           EasyCssBackgroundAttribut.class.php
  *                            -------------------
  *   begin                : 2016/06/03
- *   copyright            : (C) 2016 Toss
+ *   copyright            : (C) 2016 PaperToss
  *   email                : t0ssp4p3r@gmail.com
  *
  *
@@ -29,7 +29,7 @@
 /**
  * Description of EasyCssBackgroundAttribut
  *
- * @author Toss
+ * @author PaperToss
  */
 class EasyCssBackgroundAttribut extends EasyCssAbstractAttribut
 {

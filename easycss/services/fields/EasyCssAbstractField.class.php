@@ -4,7 +4,7 @@
  *                           EasyCssAbstractField.class.php
  *                            -------------------
  *   begin                : 2016/05/15
- *   copyright            : (C) 2016 Toss
+ *   copyright            : (C) 2016 PaperToss
  *   email                : t0ssp4p3r@gmail.com
  *
  *
@@ -29,7 +29,7 @@
 /**
  * Description of EasyCssAbstractField
  *
- * @author Toss
+ * @author PaperToss
  */
 abstract class EasyCssAbstractField
 {

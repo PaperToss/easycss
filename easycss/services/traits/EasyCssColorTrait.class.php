@@ -4,7 +4,7 @@
  *                           EasyCssColorTrait.class.php
  *                            -------------------
  *   begin                : 2016/00/01
- *   copyright            : (C) 2016 Toss
+ *   copyright            : (C) 2016 PaperToss
  *   email                : t0ssp4p3r@gmail.com
  *
  *
@@ -29,7 +29,7 @@
 /**
  * Description of EasyCssColorTrait
  *
- * @author Toss
+ * @author PaperToss
  */
 trait EasyCssColorTrait
 {

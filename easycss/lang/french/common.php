@@ -30,7 +30,7 @@
  # French #
  ####################################################
 
-$lang['module_title'] = 'EasyCss';
+$lang['module_title'] = 'Personnalisation CSS';
 
 $lang['theme_choice'] = 'Choix du thème';
 $lang['file_edit'] = 'Edition du fichier ';

@@ -4,7 +4,7 @@
  *                           EasyCssBorderXAttribut.class.php
  *                            -------------------
  *   begin                : 2016/06/05
- *   copyright            : (C) 2016 Toss
+ *   copyright            : (C) 2016 PaperToss
  *   email                : t0ssp4p3r@gmail.com
  *
  *
@@ -29,7 +29,7 @@
 /**
  * Description of EasyCssBorderXAttribut
  *
- * @author Toss
+ * @author PaperToss
  */
 class EasyCssBorderXAttribut extends EasyCssAbstractAttribut
 {

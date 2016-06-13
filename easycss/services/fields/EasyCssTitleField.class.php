@@ -4,7 +4,7 @@
  *                           EasyCssTitleField.class.php
  *                            -------------------
  *   begin                : 2016/04/29
- *   copyright            : (C) 2016 Toss
+ *   copyright            : (C) 2016 PaperToss
  *   email                : t0ssp4p3r@gmail.com
  *
  *
@@ -29,7 +29,7 @@
 /**
  * Description of EasyCssTitleField
  *
- * @author Toss
+ * @author PaperToss
  */
 class EasyCssTitleField extends EasyCssAbstractField
 {

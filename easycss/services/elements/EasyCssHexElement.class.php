@@ -4,7 +4,7 @@
  *                           EasyCssHexElement.class.php
  *                            -------------------
  *   begin                : 2016/05/22
- *   copyright            : (C) 2016 Toss
+ *   copyright            : (C) 2016 PaperToss
  *   email                : t0ssp4p3r@gmail.com
  *
  *
@@ -29,7 +29,7 @@
 /**
  * Description of EasyCssHexElement
  *
- * @author Toss
+ * @author PaperToss
  */
 class EasyCssHexElement extends EasyCssAbstractElement
 {

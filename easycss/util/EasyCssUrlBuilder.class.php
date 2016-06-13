@@ -4,7 +4,7 @@
  *                           EasycssUrlBuilder.class.php
  *                            -------------------
  *   begin                : 2016/04/22
- *   copyright            : (C) 2016 Toss
+ *   copyright            : (C) 2016 PaperToss
  *   email                : t0ssp4p3r@gmail.com
  *
  *
@@ -32,7 +32,7 @@
 class EasyCssUrlBuilder
 {
 
-    private static $dispatcher = '/easycss';
+    private static $dispatcher = '/EasyCss';
 
     /**
      * URL du choix du thème

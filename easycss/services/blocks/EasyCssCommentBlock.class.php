@@ -4,7 +4,7 @@
  *                           EasyCssCommentBlock.class.php
  *                            -------------------
  *   begin                : 2016/05/04
- *   copyright            : (C) 2016 Toss
+ *   copyright            : (C) 2016 PaperToss
  *   email                : t0ssp4p3r@gmail.com
  *
  *

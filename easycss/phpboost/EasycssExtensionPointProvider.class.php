@@ -1,10 +1,10 @@
 <?php
 
 /* #################################################
- *                           EasycssExtensionPointProvider.class.php
+ *                           EasyCssExtensionPointProvider.class.php
  *                            -------------------
  *   begin                : 2016/00/22
- *   copyright            : (C) 2016 Toss
+ *   copyright            : (C) 2016 PaperToss
  *   email                : t0ssp4p3r@gmail.com
  *
  *
@@ -31,17 +31,17 @@
  *
  * @author PaperToss
  */
-class EasycssExtensionPointProvider extends ExtensionPointProvider
+class EasyCssExtensionPointProvider extends ExtensionPointProvider
 {
 
     public function __construct()
     {
-        parent::__construct('easycss');
+        parent::__construct('EasyCss');
     }
 
     public function url_mappings()
     {
-        return new UrlMappings(array(new DispatcherUrlMapping('/easycss/index.php', '([\w/_-]*)$')));
+        return new UrlMappings(array(new DispatcherUrlMapping('/EasyCss/index.php', '([\w/_-]*)$')));
     }
     
     public function css_files()
